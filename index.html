@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioLitScreen Pro v2.5</title>
+<title>BioLitScreen Pro v2.6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,21 +20,21 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--green)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
 .shell { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
-/* --- 搜尋區塊修正：解決遮擋問題 --- */
+/* --- 搜尋區塊：強化防遮擋佈局 --- */
 .search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 
 .search-input-group { 
   display: flex; 
   gap: 12px; 
   margin-bottom: 16px; 
-  flex-wrap: wrap; /* 空間不足時自動換行，防止蓋住 */
+  flex-wrap: wrap; /* 空間不足時自動換行 */
   align-items: stretch;
 }
 
 .input-wrapper { 
   position: relative; 
   flex: 1; 
-  min-width: 250px; /* 確保輸入框在換行前保有一定寬度 */
+  min-width: 250px; /* 搜尋框保有最低限度寬度 */
 }
 .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
 .input-wrapper input { width: 100%; padding: 14px 14px 14px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; font-size: 14px; box-sizing: border-box; }
@@ -52,10 +52,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   align-items: center; 
   justify-content: center;
   gap: 8px; 
-  transition: 0.2s; 
   white-space: nowrap; /* 禁止按鈕文字換行 */
   flex-shrink: 0;      /* 禁止按鈕被壓縮 */
-  z-index: 5;           /* 確保按鈕圖層在上面 */
+  transition: 0.2s;
+  z-index: 10;
 }
 .btn-search:hover { background: #2563eb; transform: translateY(-1px); }
 
@@ -70,7 +70,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .lit-card:hover { border-color: rgba(255,255,255,0.15); }
 .source-tag { position: absolute; top: 24px; right: 24px; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
 .card-title { font-size: 17px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 10px; padding-right: 120px; line-height: 1.5; }
-.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 12px; }
+.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* 新增：保險連結樣式 */
+.doi-safe-link { font-size: 12px; color: var(--text3); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 15px; }
+.doi-safe-link:hover { color: var(--accent); text-decoration: underline; }
+
 .card-tldr { font-size: 13px; color: var(--accent); background: rgba(59,130,246,0.06); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 14px; }
 .card-abstract { font-size: 13.5px; color: var(--text2); margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
@@ -100,7 +105,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <div class="search-input-group">
       <div class="input-wrapper">
         <i class="ti ti-search"></i>
-        <input type="text" id="mainQ" placeholder="輸入關鍵字 (如: Verbascoside A549)...">
+        <input type="text" id="mainQ" placeholder="輸入關鍵字 (如: Acteoside A549)...">
       </div>
       <button class="btn-search" onclick="runUltraSearch()">
         <i class="ti ti-search"></i> 搜尋文獻
@@ -115,12 +120,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   <div id="resultsArea">
     <div style="text-align:center; padding:100px 20px; color:var(--text3)">
       <i class="ti ti-world-search" style="font-size:48px; margin-bottom:15px; display:block; opacity:0.3"></i>
-      <p>準備就緒。將同時檢索 PubMed, Semantic Scholar, PMC 與 Crossref。</p>
+      <p>準備就緒。將自動連線全球 6 大文獻數據源。</p>
     </div>
   </div>
 </main>
 
 <script>
+// --- 此處為功能邏輯 ---
 async function runUltraSearch() {
     const q = document.getElementById('mainQ').value;
     const p = document.getElementById('picoP').value;
@@ -129,7 +135,7 @@ async function runUltraSearch() {
 
     const fullQuery = `${q} ${p} ${i}`.trim();
     const area = document.getElementById('resultsArea');
-    area.innerHTML = '<div class="loading-box"><i class="ti ti-loader-2 ti-spin" style="font-size:32px"></i><p style="margin-top:15px">同步調取全球 6 個資料服務中...</p></div>';
+    area.innerHTML = '<div class="loading-box"><i class="ti ti-loader-2 ti-spin" style="font-size:32px"></i><p style="margin-top:15px">同步調取全球資料庫中...</p></div>';
 
     try {
         const [resPM, resSS, resEP, resCR] = await Promise.all([
@@ -138,11 +144,10 @@ async function runUltraSearch() {
             fetchEuropePMC(fullQuery),
             fetchCrossref(fullQuery)
         ]);
-
         const combined = [...resSS, ...resEP, ...resCR, ...resPM];
         renderResults(combined);
     } catch (err) {
-        area.innerHTML = '<div class="loading-box">連線超時，請檢查網絡環境。</div>';
+        area.innerHTML = '<div class="loading-box">連線異常。</div>';
     }
 }
 
@@ -199,7 +204,6 @@ async function findPDF(doi) {
     try {
         const up = await fetch(`https://api.unpaywall.org/v2/${doi}?email=paper@edu.tw`).then(r=>r.json());
         if (up.is_oa) return { url: up.best_oa_location.url_for_pdf, type: 'oa' };
-        
         const core = await fetch(`https://api.core.ac.uk/v3/search/works?q=doi:"${doi}"`).then(r=>r.json());
         if (core.results?.[0]?.downloadUrl) return { url: core.results[0].downloadUrl, type: 'core' };
     } catch {}
@@ -221,10 +225,13 @@ function renderResults(items) {
             <div class="card-meta">
                 <span><i class="ti ti-calendar"></i> ${item.date}</span>
                 <span><i class="ti ti-user"></i> ${item.author} et al.</span>
-                ${item.doi ? `<span style="opacity:0.5">DOI: ${item.doi}</span>` : ''}
             </div>
+            ${item.doi ? `
+                <a href="https://doi.org/${item.doi}" target="_blank" class="doi-safe-link">
+                    <i class="ti ti-external-link"></i> 出版商官網 (DOI 穩定備份連結)
+                </a>` : ''}
             ${item.tldr ? `<div class="card-tldr"><strong>核心摘要:</strong> ${item.tldr}</div>` : ''}
-            <div class="card-abstract">${item.abstract || '點擊標題開啟資料庫原文...'}</div>
+            <div class="card-abstract">${item.abstract || '點擊標題開啟原文...'}</div>
             <div id="${docId}"></div>
         `;
         area.appendChild(card);
