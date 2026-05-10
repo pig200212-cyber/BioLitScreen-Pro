@@ -3,463 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioLitScreen Pro v2 — 生醫 & AI生物資訊文獻篩選系統</title>
+<title>BioLitScreen Pro v2 — 生醫文獻篩選系統</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
 <style>
 :root {
-  --bg: #0b0f1a;
-  --bg2: #111827;
-  --bg3: #1a2236;
-  --bg4: #1f2d44;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --text: #e8edf5;
-  --text2: #8b97b0;
-  --text3: #5c6b82;
-  --accent: #3b82f6;
-  --accent2: #60a5fa;
-  --accentbg: rgba(59,130,246,0.12);
-  --accentbg2: rgba(59,130,246,0.2);
-  --green: #10b981;
-  --greenbg: rgba(16,185,129,0.12);
-  --amber: #f59e0b;
-  --amberbg: rgba(245,158,11,0.12);
-  --violet: #8b5cf6;
-  --violetbg: rgba(139,92,246,0.12);
-  --rose: #f43f5e;
-  --rosebg: rgba(244,63,94,0.12);
-  --cyan: #06b6d4;
-  --cyanbg: rgba(6,182,212,0.12);
-  --r: 10px;
-  --r2: 14px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  --font: 'DM Sans', sans-serif;
-  --mono: 'DM Mono', monospace;
+  --bg: #0b0f1a; --bg2: #111827; --bg3: #1a2236; --bg4: #1f2d44;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+  --text: #e8edf5; --text2: #8b97b0; --text3: #5c6b82;
+  --accent: #3b82f6; --accent2: #60a5fa; --accentbg: rgba(59,130,246,0.12);
+  --green: #10b981; --greenbg: rgba(16,185,129,0.12);
+  --amber: #f59e0b; --amberbg: rgba(245,158,11,0.12);
+  --r: 10px; --r2: 14px;
+  --font: 'DM Sans', sans-serif; --mono: 'DM Mono', monospace;
 }
- 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  line-height: 1.6;
-}
- 
-/* ── Header ── */
-.topbar {
-  background: rgba(11,15,26,0.9);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.logo-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  color: #fff;
-  flex-shrink: 0;
-}
-.brand-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.01em;
-}
-.brand-tag {
-  font-size: 11px;
-  color: var(--text3);
-  font-weight: 400;
-}
-.topbar-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.ai-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--green);
-  background: var(--greenbg);
-  border: 1px solid rgba(16,185,129,0.2);
-  border-radius: 20px;
-  padding: 4px 10px;
-}
-.ai-status .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
- 
-/* ── Layout ── */
-.shell {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px 20px 60px;
-}
- 
-/* ── Topic Quick-Select ── */
-.topic-section {
-  margin-bottom: 20px;
-}
-.section-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text3);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.topic-grid {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.topic-pill {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 11px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.15s;
-  white-space: nowrap;
-  background: var(--bg3);
-  color: var(--text2);
-  border-color: var(--border);
-}
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+.topbar { background: rgba(11,15,26,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 17px; color: #fff; flex-shrink: 0; }
+.brand-name { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.brand-tag { font-size: 11px; color: var(--text3); font-weight: 400; }
+.shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.topic-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.topic-pill { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg3); color: var(--text2); transition: all 0.15s; }
 .topic-pill:hover { border-color: var(--border2); color: var(--text); }
-.topic-pill.active { border-color: var(--accent); background: var(--accentbg); color: var(--accent2); }
-.topic-pill.ai-tag.active  { border-color: var(--violet); background: var(--violetbg); color: #c4b5fd; }
-.topic-pill.bio-tag.active  { border-color: var(--cyan); background: var(--cyanbg); color: #67e8f9; }
-.topic-pill.chem-tag.active  { border-color: var(--green); background: var(--greenbg); color: #6ee7b7; }
-.topic-pill i { font-size: 13px; }
- 
-/* ── Search Box ── */
-.search-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 16px;
-  margin-bottom: 14px;
-}
-.search-main {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.search-input-wrap {
-  position: relative;
-  flex: 1;
-}
-.search-input-wrap i {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text3);
-  font-size: 16px;
-  pointer-events: none;
-}
-.search-input-wrap input {
-  width: 100%;
-  padding: 10px 12px 10px 36px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 14px;
-  transition: border-color 0.15s;
-}
-.search-input-wrap input::placeholder { color: var(--text3); }
-.search-input-wrap input:focus { outline: none; border-color: var(--accent); }
- 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 9px 16px;
-  border-radius: var(--r);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--bg3);
-  color: var(--text);
-  white-space: nowrap;
-  transition: all 0.15s;
-}
-.btn:hover { border-color: var(--border2); background: var(--bg4); }
+.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px; margin-bottom: 14px; }
+.search-main { display: flex; gap: 8px; margin-bottom: 12px; }
+.search-input-wrap { position: relative; flex: 1; }
+.search-input-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+.search-input-wrap input { width: 100%; padding: 10px 12px 10px 36px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); color: var(--text); outline: none; }
+.btn { display: inline-flex; align-items: center; gap: 5px; padding: 9px 16px; border-radius: var(--r); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg3); color: var(--text); transition: all 0.15s; }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.btn.primary:hover { background: #2563eb; border-color: #2563eb; }
-.btn.ghost { background: transparent; border-color: transparent; color: var(--text2); }
-.btn.ghost:hover { background: var(--bg3); color: var(--text); }
-.btn.sm { padding: 5px 10px; font-size: 12px; }
-.btn.danger:hover { border-color: var(--rose); color: var(--rose); }
- 
-/* ── Database chips ── */
-.db-row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.db-chip {
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11.5px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--bg3);
-  color: var(--text3);
-  transition: all 0.15s;
-  font-family: var(--mono);
-}
-.db-chip:hover { color: var(--text2); border-color: var(--border2); }
-.db-chip.on { background: var(--accentbg); border-color: rgba(59,130,246,0.4); color: var(--accent2); }
- 
-/* ── PICO Grid ── */
-.pico-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.pico-box {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 10px 12px;
-  transition: border-color 0.15s;
-}
-.pico-box:focus-within { border-color: var(--border2); }
-.pico-label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 5px;
-}
-.pico-badge {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  background: var(--accentbg);
-  color: var(--accent2);
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.pico-box input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 12.5px;
-  outline: none;
-}
-.pico-box input::placeholder { color: var(--text3); }
- 
-/* ── Filter Row ── */
-.filter-bar {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  margin-bottom: 12px;
-}
-.flt-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.flt-group label {
-  font-size: 10.5px;
-  font-weight: 500;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.flt-group select {
-  padding: 7px 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  color: var(--text2);
-  font-family: var(--font);
-  font-size: 12.5px;
-  cursor: pointer;
-}
-.flt-group select:focus { outline: none; border-color: var(--accent); }
- 
-/* ── Nav Tabs ── */
-.nav-tabs {
-  display: flex;
-  gap: 2px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 20px;
-}
-.ntab {
-  padding: 9px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  color: var(--text3);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  background: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: color 0.15s;
-  font-family: var(--font);
-}
-.ntab:hover:not(.on) { color: var(--text2); }
+.pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pico-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; }
+.pico-label { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
+.pico-badge { width: 16px; height: 16px; border-radius: 4px; background: var(--accentbg); color: var(--accent2); font-size: 10px; display: flex; align-items: center; justify-content: center; }
+.pico-box input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 12.5px; outline: none; margin-top: 5px; }
+.nav-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.ntab { padding: 9px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text3); border: none; background: none; border-bottom: 2px solid transparent; transition: 0.15s; }
 .ntab.on { color: var(--accent2); border-bottom-color: var(--accent); }
- 
-/* ── Panels ── */
 .panel { display: none; }
 .panel.on { display: block; }
-
-/* ── AI Hosting Panel & Monitoring Styles ── */
-.hosting-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.hosting-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 14px 16px;
-  transition: border-color 0.15s;
-}
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 10px;
-  margin-top: 8px;
-  font-weight: 500;
-}
+.status-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 8px; border-radius: 10px; margin-top: 8px; font-weight: 500; }
 .status-ok { background: var(--greenbg); color: #6ee7b7; }
 .status-warn { background: var(--amberbg); color: #fcd34d; }
-.status-info { background: var(--accentbg); color: var(--accent2); }
-
 .empty-state { text-align: center; padding: 40px; color: var(--text3); }
 </style>
 </head>
 <body>
- 
+
 <header class="topbar">
   <div class="logo-mark"><i class="ti ti-dna-2"></i></div>
   <div>
     <div class="brand-name">BioLitScreen Pro</div>
-    <div class="brand-tag">生醫 · 健康監控 · 自動修復 · 版本管理</div>
-  </div>
-  <div class="topbar-right">
-    <div class="ai-status" id="systemGlobalStatus"><div class="dot"></div><span>系統監控中</span></div>
+    <div class="brand-tag">生醫文獻篩選 · PICO · 系統穩定版</div>
   </div>
 </header>
- 
+
 <main class="shell">
-  <div class="topic-section">
-    <div class="section-label">主題快選</div>
-    <div class="topic-grid">
-      <button class="topic-pill chem-tag" onclick="fillQuick('verbascoside anti-tumor')">天然化合物</button>
-      <button class="topic-pill ai-tag" onclick="fillQuick('deep learning drug discovery')">AI 藥物發現</button>
-      <button class="topic-pill bio-tag" onclick="fillQuick('RNA-seq single cell')">單細胞轉錄組</button>
-    </div>
+  <div class="section-label">主題快選</div>
+  <div class="topic-grid">
+    <button class="topic-pill" onclick="fillQuick('verbascoside apoptosis')">天然化合物</button>
+    <button class="topic-pill" onclick="fillQuick('RNA-seq transcriptomics')">轉錄組分析</button>
+    <button class="topic-pill" onclick="fillQuick('CRISPR gene editing')">基因編輯</button>
   </div>
- 
+
   <div class="search-card">
     <div class="search-main">
-      <div class="search-input-wrap">
-        <i class="ti ti-search"></i>
-        <input type="text" id="mainQ" placeholder="輸入關鍵字..." />
-      </div>
-      <button class="btn primary" onclick="alert('搜尋功能已就緒')">搜尋</button>
+      <div class="search-input-wrap"><i class="ti ti-search"></i><input type="text" id="mainQ" placeholder="搜尋關鍵字..."></div>
+      <button class="btn primary">搜尋</button>
     </div>
- 
     <div class="pico-grid">
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">P</div>Population</div><input id="picoP" placeholder="目標人群..."></div>
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">I</div>Intervention</div><input id="picoI" placeholder="干預手段..."></div>
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">C</div>Comparison</div><input id="picoC" placeholder="對照組..."></div>
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">O</div>Outcome</div><input id="picoO" placeholder="預期結果..."></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">P</div>Population</div><input id="picoP"></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">I</div>Intervention</div><input id="picoI"></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">C</div>Comparison</div><input id="picoC"></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">O</div>Outcome</div><input id="picoO"></div>
     </div>
   </div>
- 
+
   <div class="nav-tabs">
     <button class="ntab on" onclick="switchTab('search')">搜尋結果</button>
-    <button class="ntab" onclick="switchTab('ai-hosting')">系統託管 & 監控</button>
+    <button class="ntab" onclick="switchTab('system')">系統健康 & 備份</button>
   </div>
- 
+
   <div id="panel-search" class="panel on">
     <div id="resultsArea" class="empty-state">
-      <i class="ti ti-microscope"></i>
-      <p>等待搜尋指令...</p>
+      <i class="ti ti-microscope" style="font-size:30px;display:block;margin-bottom:10px"></i>
+      <p>請輸入關鍵字開始篩選</p>
     </div>
   </div>
- 
-  <div id="panel-ai-hosting" class="panel">
-    <div class="hosting-grid">
-      <div class="hosting-card" id="monitorCard">
-        <div class="hosting-card-title"><i class="ti ti-heart-rate-monitor"></i> 健康監控</div>
-        <div class="hosting-card-desc">監控前端運行與 API 狀態。</div>
-        <div id="deployStatus" class="status-pill status-ok">所有系統正常</div>
+
+  <div id="panel-system" class="panel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="search-card" style="cursor:pointer" onclick="checkLogs()">
+        <div style="font-size:13px;font-weight:600"><i class="ti ti-activity"></i> 運行狀態監控</div>
+        <div id="deployStatus" class="status-pill status-ok">系統運行正常</div>
       </div>
-      <div class="hosting-card" onclick="systemRollback()" style="cursor:pointer">
-        <div class="hosting-card-title"><i class="ti ti-history"></i> 版本管理 & 回滾</div>
-        <div class="hosting-card-desc">點擊此處清除緩存並強制重置系統版本。</div>
-        <div class="status-pill status-info">目前版本 v2.1-Stable</div>
+      <div class="search-card" style="cursor:pointer" onclick="systemRollback()">
+        <div style="font-size:13px;font-weight:600"><i class="ti ti-refresh"></i> 數據重置</div>
+        <div class="status-pill" style="background:rgba(255,255,255,0.05)">清除本地緩存</div>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-// ── 基礎 UI 邏輯 ──
 function switchTab(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
     document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
@@ -467,103 +118,49 @@ function switchTab(id) {
     event.currentTarget.classList.add('on');
 }
 
-function fillQuick(val) {
-    document.getElementById('mainQ').value = val;
-}
+function fillQuick(val) { document.getElementById('mainQ').value = val; }
 
-// ── 核心整合腳本：健康監控、自動修復與狀態恢復 ──
+// ── 核心整合：監控與恢復邏輯 ──
 (function() {
-    console.log("🚀 BioLitScreen 核心監控系統啟動...");
+    const fields = ['mainQ', 'picoP', 'picoI', 'picoC', 'picoO'];
 
-    // 1. 系統健康監控 (System Health Monitoring)
-    window.addEventListener('error', function(event) {
-        const errorLog = {
-            time: new Date().toLocaleTimeString(),
-            message: event.message,
-            source: event.filename ? event.filename.split('/').pop() : 'inline',
-            lineno: event.lineno
-        };
-        
-        // 儲存錯誤日誌到本地 (最多保留 10 筆)
-        let logs = JSON.parse(localStorage.getItem('biolit_sys_logs') || '[]');
-        logs.unshift(errorLog);
-        localStorage.setItem('biolit_sys_logs', JSON.stringify(logs.slice(0, 10)));
+    // 1. 健康監控
+    window.addEventListener('error', (e) => {
+        let logs = JSON.parse(localStorage.getItem('sys_logs') || '[]');
+        logs.unshift({t: new Date().toLocaleTimeString(), m: e.message});
+        localStorage.setItem('sys_logs', JSON.stringify(logs.slice(0, 5)));
+        const st = document.getElementById('deployStatus');
+        if (st) { st.innerText = "偵測到異常，請點擊查看"; st.className = "status-pill status-warn"; }
+    });
 
-        // 更新 UI 上的狀態提示
-        const deployStatus = document.getElementById('deployStatus');
-        const globalStatus = document.getElementById('systemGlobalStatus');
-        if (deployStatus) {
-            deployStatus.innerHTML = `<i class="ti ti-alert-triangle"></i> 偵測到異常: ${errorLog.message.substring(0,15)}...`;
-            deployStatus.className = 'status-pill status-warn';
-        }
-        if (globalStatus) {
-            globalStatus.style.color = 'var(--amber)';
-            globalStatus.querySelector('span').innerText = '系統異常捕捉中';
+    // 2. 自動存檔 (每 10 秒)
+    setInterval(() => {
+        const state = {};
+        fields.forEach(id => { state[id] = document.getElementById(id).value; });
+        localStorage.setItem('biolit_save', JSON.stringify(state));
+    }, 10000);
+
+    // 3. 載入恢復
+    window.addEventListener('load', () => {
+        const saved = localStorage.getItem('biolit_save');
+        if (saved) {
+            const data = JSON.parse(saved);
+            fields.forEach(id => { if(data[id]) document.getElementById(id).value = data[id]; });
         }
     });
 
-    // 2. 狀態持久化 (State Persistence)
-    const fieldsToSave = ['mainQ', 'picoP', 'picoI', 'picoC', 'picoO'];
-
-    const saveCurrentState = () => {
-        const state = {};
-        fieldsToSave.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) state[id] = el.value;
-        });
-        state.lastUpdate = new Date().toISOString();
-        localStorage.setItem('biolit_autosave_v2', JSON.stringify(state));
+    window.checkLogs = () => {
+        const logs = JSON.parse(localStorage.getItem('sys_logs') || '[]');
+        alert(logs.length ? logs.map(l => `[${l.t}] ${l.m}`).join('\n') : "系統無錯誤紀錄。");
     };
 
-    // 3. 自動修復與載入恢復 (Auto-Recovery)
-    window.addEventListener('load', () => {
-        const savedData = localStorage.getItem('biolit_autosave_v2');
-        if (savedData) {
-            try {
-                const state = JSON.parse(savedData);
-                fieldsToSave.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el && state[id]) el.value = state[id];
-                });
-                
-                // 在介面提示恢復成功
-                const resArea = document.getElementById('resultsArea');
-                if (resArea) {
-                    const notify = document.createElement('div');
-                    notify.style = "margin-top:10px; font-size:11px; color:var(--accent2); background:var(--accentbg); padding:5px 12px; border-radius:20px; display:inline-block;";
-                    notify.innerHTML = `<i class="ti ti-refresh"></i> 已恢復上次作業進度 (${new Date(state.lastUpdate).toLocaleTimeString()})`;
-                    resArea.appendChild(notify);
-                }
-            } catch (e) {
-                console.error("恢復失敗，執行自動清空修復");
-                localStorage.removeItem('biolit_autosave_v2');
-            }
-        }
-        // 啟動每 10 秒自動存檔
-        setInterval(saveCurrentState, 10000);
-    });
-
-    // 4. 手動回退/重置功能
-    window.systemRollback = function() {
-        if(confirm("確定要重置系統嗎？這將清除所有暫存的 PICO 資料與錯誤日誌。")) {
-            localStorage.removeItem('biolit_autosave_v2');
-            localStorage.removeItem('biolit_sys_logs');
+    window.systemRollback = () => {
+        if(confirm("確定重置？這會清空目前的 PICO 輸入。")) {
+            localStorage.clear();
             location.reload();
         }
     };
-
-    // 點擊監控卡片查看詳細日誌
-    document.getElementById('monitorCard').onclick = function() {
-        const logs = JSON.parse(localStorage.getItem('biolit_sys_logs') || '[]');
-        if (logs.length === 0) {
-            alert("目前系統運行完美，無錯誤紀錄。");
-        } else {
-            alert("最近錯誤日誌：\n" + logs.map(l => `[${l.time}] ${l.message} (${l.source}:${l.lineno})`).join('\n'));
-        }
-    };
-
 })();
 </script>
-
 </body>
 </html>
