@@ -20,36 +20,32 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--green)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
 .shell { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
-<style>
-/* --- 搜尋區塊強化修正 --- */
-.search-card { 
-  background: var(--bg2); 
-  border: 1px solid var(--border); 
-  border-radius: var(--r); 
-  padding: 24px; /* 增加內距 */
-  margin-bottom: 20px; 
-}
+/* --- 搜尋區塊微調 --- */
+.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 
+/* 使用 wrap 並調整按鈕寬度，防止重疊 */
 .search-input-group { 
   display: flex; 
   gap: 12px; 
-  margin-bottom: 16px; 
-  flex-wrap: wrap; /* 關鍵：寬度不足時自動換行 */
+  margin-bottom: 20px; 
+  flex-wrap: wrap; /* 寬度不足時自動換行 */
 }
 
 .input-wrapper { 
   position: relative; 
   flex: 1; 
-  min-width: 260px; /* 確保搜尋框不會縮太小 */
+  min-width: 280px; /* 確保輸入框在換行前保有基本寬度 */
 }
+.input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+.input-wrapper input { width: 100%; padding: 14px 14px 14px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; font-size: 14px; }
+.input-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 
-/* 搜尋按鈕微調 */
 .btn-search { 
   background: var(--accent); 
   color: #fff; 
   border: none; 
-  padding: 0 32px; 
-  height: 50px; 
+  padding: 0 28px; 
+  height: 48px; /* 固定高度與輸入框對齊 */
   border-radius: 8px; 
   font-weight: 600; 
   cursor: pointer; 
@@ -58,47 +54,63 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   justify-content: center;
   gap: 8px; 
   transition: 0.2s; 
-  white-space: nowrap;
-  font-size: 15px;
+  white-space: nowrap; /* 防止按鈕文字斷行 */
 }
-
-/* 針對窄螢幕的優化 */
-@media (max-width: 600px) {
-  .btn-search {
-    width: 100%; /* 手機版按鈕撐滿，解決擠壓問題 */
-  }
-  .search-input-group {
-    gap: 16px;
-  }
-}
-
 .btn-search:hover { background: #2563eb; transform: translateY(-1px); }
 
-/* PICO 區塊增加頂部間距，確保不被上方按鈕壓到 */
-.pico-grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-  gap: 12px;
-  margin-top: 10px; 
-}
-</style>
+/* PICO 區塊 */
+.pico-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.pico-item { background: var(--bg3); border: 1px solid var(--border); padding: 12px; border-radius: 8px; }
+.pico-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em; }
+.pico-item input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 13px; outline: none; }
 
-<div class="search-card">
-  <div class="search-input-group">
-    <div class="input-wrapper">
-      <i class="ti ti-search"></i>
-      <input type="text" id="mainQ" placeholder="輸入搜尋課題 (例如: Acteoside A549)...">
+/* 結果卡片樣式保持不變... */
+.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 16px; position: relative; transition: 0.2s; border-left: 4px solid transparent; }
+.lit-card:hover { border-color: rgba(255,255,255,0.15); }
+.source-tag { position: absolute; top: 24px; right: 24px; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+.card-title { font-size: 17px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 10px; padding-right: 120px; line-height: 1.5; }
+.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 12px; }
+.card-tldr { font-size: 13px; color: var(--accent); background: rgba(59,130,246,0.06); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 14px; }
+.card-abstract { font-size: 13.5px; color: var(--text2); margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.tag-pubmed { background: rgba(59,130,246,0.1); color: var(--accent); border-left-color: var(--accent); }
+.tag-ss { background: rgba(139,92,246,0.1); color: var(--purple); border-left-color: var(--purple); }
+.tag-epmc { background: rgba(16,185,129,0.1); color: var(--green); border-left-color: var(--green); }
+.tag-crossref { background: rgba(6,182,212,0.1); color: var(--cyan); border-left-color: var(--cyan); }
+
+.pdf-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; background: var(--green); color: #fff; transition: 0.2s; }
+.pdf-btn:hover { filter: brightness(1.1); }
+.pdf-btn.core { background: var(--amber); }
+
+.loading-box { text-align: center; padding: 80px; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo-mark"><i class="ti ti-database-search"></i></div>
+  <div>
+    <div style="font-size:15px; font-weight:600">BioLitScreen Pro</div>
+    <div style="font-size:11px; color:var(--text3)">六合一實時文獻 & 全文檢索系統</div>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="search-card">
+    <div class="search-input-group">
+      <div class="input-wrapper">
+        <i class="ti ti-search"></i>
+        <input type="text" id="mainQ" placeholder="輸入搜尋課題 (例如: Acteoside A549)...">
+      </div>
+      <button class="btn-search" onclick="runUltraSearch()">
+        <i class="ti ti-bolt"></i> 執行檢索
+      </button>
     </div>
-    <button class="btn-search" onclick="runUltraSearch()">
-      <i class="ti ti-search"></i> 搜尋文獻
-    </button>
+    <div class="pico-grid">
+      <div class="pico-item"><div class="pico-label">Population</div><input id="picoP" placeholder="目標細胞/群體"></div>
+      <div class="pico-item"><div class="pico-label">Intervention</div><input id="picoI" placeholder="處理措施/藥物"></div>
+    </div>
   </div>
-  
-  <div class="pico-grid">
-    <div class="pico-item"><div class="pico-label">Population</div><input id="picoP" placeholder="目標細胞/群體"></div>
-    <div class="pico-item"><div class="pico-label">Intervention</div><input id="picoI" placeholder="處理措施/藥物"></div>
-  </div>
-</div>
 
   <div id="resultsArea">
     <div style="text-align:center; padding:100px 20px; color:var(--text3)">
