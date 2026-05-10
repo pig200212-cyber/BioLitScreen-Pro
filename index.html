@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioLitScreen Pro v2 — 生醫文獻篩選系統</title>
+<title>BioLitScreen Pro v2 — 多資料庫文獻檢索系統</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -27,9 +27,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
 .brand-tag { font-size: 11px; color: var(--text3); font-weight: 400; }
 .shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
 .section-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.topic-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
-.topic-pill { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg3); color: var(--text2); transition: all 0.15s; }
-.topic-pill:hover { border-color: var(--border2); color: var(--text); }
+
 .search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px; margin-bottom: 14px; }
 .search-main { display: flex; gap: 8px; margin-bottom: 12px; }
 .search-input-wrap { position: relative; flex: 1; }
@@ -37,20 +35,32 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
 .search-input-wrap input { width: 100%; padding: 10px 12px 10px 36px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); color: var(--text); outline: none; }
 .btn { display: inline-flex; align-items: center; gap: 5px; padding: 9px 16px; border-radius: var(--r); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg3); color: var(--text); transition: all 0.15s; }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
 .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pico-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; }
 .pico-label { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
 .pico-badge { width: 16px; height: 16px; border-radius: 4px; background: var(--accentbg); color: var(--accent2); font-size: 10px; display: flex; align-items: center; justify-content: center; }
 .pico-box input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 12.5px; outline: none; margin-top: 5px; }
+
 .nav-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
 .ntab { padding: 9px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text3); border: none; background: none; border-bottom: 2px solid transparent; transition: 0.15s; }
 .ntab.on { color: var(--accent2); border-bottom-color: var(--accent); }
+
+/* 資料庫導向按鈕區 */
+.db-redirects { display: flex; gap: 8px; margin-bottom: 16px; display: none; }
+.db-link-btn { padding: 8px 12px; border-radius: var(--r); font-size: 12px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+.nature-btn { background: #e02424; color: #fff; }
+.sd-btn { background: #ff6a00; color: #fff; }
+
+.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
+.card-title { font-size: 14px; font-weight: 600; color: var(--accent2); margin-bottom: 8px; text-decoration: none; display: block; }
+.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
+.card-abstract { font-size: 12.5px; color: var(--text2); line-height: 1.6; }
+
 .panel { display: none; }
 .panel.on { display: block; }
-.status-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 8px; border-radius: 10px; margin-top: 8px; font-weight: 500; }
-.status-ok { background: var(--greenbg); color: #6ee7b7; }
-.status-warn { background: var(--amberbg); color: #fcd34d; }
 .empty-state { text-align: center; padding: 40px; color: var(--text3); }
+.loading { text-align: center; padding: 20px; color: var(--accent2); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -59,22 +69,15 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
   <div class="logo-mark"><i class="ti ti-dna-2"></i></div>
   <div>
     <div class="brand-name">BioLitScreen Pro</div>
-    <div class="brand-tag">生醫文獻篩選 · PICO · 系統穩定版</div>
+    <div class="brand-tag">跨資料庫檢索系統 (PubMed / Nature / ScienceDirect)</div>
   </div>
 </header>
 
 <main class="shell">
-  <div class="section-label">主題快選</div>
-  <div class="topic-grid">
-    <button class="topic-pill" onclick="fillQuick('verbascoside apoptosis')">天然化合物</button>
-    <button class="topic-pill" onclick="fillQuick('RNA-seq transcriptomics')">轉錄組分析</button>
-    <button class="topic-pill" onclick="fillQuick('CRISPR gene editing')">基因編輯</button>
-  </div>
-
   <div class="search-card">
     <div class="search-main">
-      <div class="search-input-wrap"><i class="ti ti-search"></i><input type="text" id="mainQ" placeholder="搜尋關鍵字..."></div>
-      <button class="btn primary">搜尋</button>
+      <div class="search-input-wrap"><i class="ti ti-search"></i><input type="text" id="mainQ" placeholder="輸入搜尋關鍵字..."></div>
+      <button class="btn primary" onclick="runSearch()"><i class="ti ti-search"></i> 執行全面搜尋</button>
     </div>
     <div class="pico-grid">
       <div class="pico-box"><div class="pico-label"><div class="pico-badge">P</div>Population</div><input id="picoP"></div>
@@ -84,29 +87,25 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
     </div>
   </div>
 
+  <div id="dbLinks" class="db-redirects">
+    <a href="#" id="natureLink" target="_blank" class="db-link-btn nature-btn"><i class="ti ti-external-link"></i> 開啟 Nature 搜尋結果</a>
+    <a href="#" id="sdLink" target="_blank" class="db-link-btn sd-btn"><i class="ti ti-external-link"></i> 開啟 ScienceDirect 搜尋結果</a>
+  </div>
+
   <div class="nav-tabs">
-    <button class="ntab on" onclick="switchTab('search')">搜尋結果</button>
-    <button class="ntab" onclick="switchTab('system')">系統健康 & 備份</button>
+    <button class="ntab on" onclick="switchTab('search')">PubMed 實時結果</button>
+    <button class="ntab" onclick="switchTab('prisma')">檢索日誌</button>
   </div>
 
   <div id="panel-search" class="panel on">
     <div id="resultsArea" class="empty-state">
-      <i class="ti ti-microscope" style="font-size:30px;display:block;margin-bottom:10px"></i>
-      <p>請輸入關鍵字開始篩選</p>
+      <i class="ti ti-database-search" style="font-size:30px;display:block;margin-bottom:10px"></i>
+      <p>搜尋將會同步為您準備 Nature 與 ScienceDirect 的鏈接</p>
     </div>
   </div>
 
-  <div id="panel-system" class="panel">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="search-card" style="cursor:pointer" onclick="checkLogs()">
-        <div style="font-size:13px;font-weight:600"><i class="ti ti-activity"></i> 運行狀態監控</div>
-        <div id="deployStatus" class="status-pill status-ok">系統運行正常</div>
-      </div>
-      <div class="search-card" style="cursor:pointer" onclick="systemRollback()">
-        <div style="font-size:13px;font-weight:600"><i class="ti ti-refresh"></i> 數據重置</div>
-        <div class="status-pill" style="background:rgba(255,255,255,0.05)">清除本地緩存</div>
-      </div>
-    </div>
+  <div id="panel-prisma" class="panel">
+    <div class="empty-state" id="logArea">尚未有搜尋活動</div>
   </div>
 </main>
 
@@ -118,49 +117,59 @@ function switchTab(id) {
     event.currentTarget.classList.add('on');
 }
 
-function fillQuick(val) { document.getElementById('mainQ').value = val; }
+async function runSearch() {
+    const mainQ = document.getElementById('mainQ').value;
+    const p = document.getElementById('picoP').value;
+    const i = document.getElementById('picoI').value;
+    const resultsArea = document.getElementById('resultsArea');
+    const dbLinks = document.getElementById('dbLinks');
 
-// ── 核心整合：監控與恢復邏輯 ──
-(function() {
-    const fields = ['mainQ', 'picoP', 'picoI', 'picoC', 'picoO'];
+    if (!mainQ && !p && !i) { alert("請輸入搜尋內容"); return; }
 
-    // 1. 健康監控
-    window.addEventListener('error', (e) => {
-        let logs = JSON.parse(localStorage.getItem('sys_logs') || '[]');
-        logs.unshift({t: new Date().toLocaleTimeString(), m: e.message});
-        localStorage.setItem('sys_logs', JSON.stringify(logs.slice(0, 5)));
-        const st = document.getElementById('deployStatus');
-        if (st) { st.innerText = "偵測到異常，請點擊查看"; st.className = "status-pill status-warn"; }
-    });
+    const fullQuery = `${mainQ} ${p} ${i}`.trim();
+    
+    // 顯示外部鏈接按鈕
+    dbLinks.style.display = 'flex';
+    document.getElementById('natureLink').href = `https://www.nature.com/search?q=${encodeURIComponent(fullQuery)}`;
+    document.getElementById('sdLink').href = `https://www.sciencedirect.com/search?qs=${encodeURIComponent(fullQuery)}`;
 
-    // 2. 自動存檔 (每 10 秒)
-    setInterval(() => {
-        const state = {};
-        fields.forEach(id => { state[id] = document.getElementById(id).value; });
-        localStorage.setItem('biolit_save', JSON.stringify(state));
-    }, 10000);
+    resultsArea.innerHTML = '<div class="loading"><i class="ti ti-loader-2"></i> PubMed 資料檢索中...</div>';
 
-    // 3. 載入恢復
-    window.addEventListener('load', () => {
-        const saved = localStorage.getItem('biolit_save');
-        if (saved) {
-            const data = JSON.parse(saved);
-            fields.forEach(id => { if(data[id]) document.getElementById(id).value = data[id]; });
+    // 1. PubMed API 邏輯
+    try {
+        const searchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(fullQuery)}&retmode=json&retmax=8`;
+        const searchRes = await fetch(searchUrl);
+        const searchData = await searchRes.json();
+        const idList = searchData.esearchresult.idlist;
+
+        if (!idList || idList.length === 0) {
+            resultsArea.innerHTML = '<div class="empty-state">PubMed 未找到結果，建議查看上方外部資料庫鏈接。</div>';
+            return;
         }
-    });
 
-    window.checkLogs = () => {
-        const logs = JSON.parse(localStorage.getItem('sys_logs') || '[]');
-        alert(logs.length ? logs.map(l => `[${l.t}] ${l.m}`).join('\n') : "系統無錯誤紀錄。");
-    };
+        const summaryUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${idList.join(',')}&retmode=json`;
+        const summaryRes = await fetch(summaryUrl);
+        const summaryData = await summaryRes.json();
 
-    window.systemRollback = () => {
-        if(confirm("確定重置？這會清空目前的 PICO 輸入。")) {
-            localStorage.clear();
-            location.reload();
-        }
-    };
-})();
+        resultsArea.innerHTML = '';
+        idList.forEach(id => {
+            const article = summaryData.result[id];
+            const card = document.createElement('div');
+            card.className = 'lit-card';
+            card.innerHTML = `
+                <a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" class="card-title">${article.title}</a>
+                <div class="card-meta"><span>${article.pubdate}</span> | <span>PMID: ${id}</span></div>
+                <div class="card-abstract">來源：${article.source}。Nature 與 ScienceDirect 的結果請點擊上方紅色/橘色按鈕開啟。</div>
+            `;
+            resultsArea.appendChild(card);
+        });
+        
+        document.getElementById('logArea').innerHTML = `最後搜尋時間: ${new Date().toLocaleTimeString()}<br>關鍵字: ${fullQuery}`;
+
+    } catch (e) {
+        resultsArea.innerHTML = '<div class="empty-state">PubMed 連線異常。</div>';
+    }
+}
 </script>
 </body>
 </html>
