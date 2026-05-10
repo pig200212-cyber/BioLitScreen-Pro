@@ -3,172 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioLitScreen Pro v2 — 多資料庫文獻檢索系統</title>
+<title>BioLitScreen Pro v2 — 六合一全能文獻搜尋引擎</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
 <style>
 :root {
-  --bg: #0b0f1a; --bg2: #111827; --bg3: #1a2236; --bg4: #1f2d44;
-  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
-  --text: #e8edf5; --text2: #8b97b0; --text3: #5c6b82;
-  --accent: #3b82f6; --accent2: #60a5fa; --accentbg: rgba(59,130,246,0.12);
-  --green: #10b981; --greenbg: rgba(16,185,129,0.12);
-  --amber: #f59e0b; --amberbg: rgba(245,158,11,0.12);
-  --r: 10px; --r2: 14px;
-  --font: 'DM Sans', sans-serif; --mono: 'DM Mono', monospace;
+  --bg: #0b0f1a; --bg2: #111827; --bg3: #1a2236;
+  --border: rgba(255,255,255,0.07); --text: #e8edf5; --text2: #8b97b0; --text3: #5c6b82;
+  --accent: #3b82f6; --purple: #8b5cf6; --green: #10b981; --amber: #f59e0b; --cyan: #06b6d4;
+  --r: 12px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
-.topbar { background: rgba(11,15,26,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
-.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 17px; color: #fff; flex-shrink: 0; }
-.brand-name { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
-.brand-tag { font-size: 11px; color: var(--text3); font-weight: 400; }
-.shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
-.section-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+.topbar { background: rgba(11,15,26,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+.logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--green)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
+.shell { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
-.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px; margin-bottom: 14px; }
-.search-main { display: flex; gap: 8px; margin-bottom: 12px; }
-.search-input-wrap { position: relative; flex: 1; }
-.search-input-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-.search-input-wrap input { width: 100%; padding: 10px 12px 10px 36px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); color: var(--text); outline: none; }
-.btn { display: inline-flex; align-items: center; gap: 5px; padding: 9px 16px; border-radius: var(--r); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg3); color: var(--text); transition: all 0.15s; }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* 搜尋區塊 */
+.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.search-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+.input-wrapper { position: relative; flex: 1; }
+.input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+.input-wrapper input { width: 100%; padding: 12px 14px 12px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; }
+.input-wrapper input:focus { border-color: var(--accent); }
+.btn-search { background: var(--accent); color: #fff; border: none; padding: 0 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+.btn-search:hover { opacity: 0.9; transform: translateY(-1px); }
 
-.pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.pico-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; }
-.pico-label { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
-.pico-badge { width: 16px; height: 16px; border-radius: 4px; background: var(--accentbg); color: var(--accent2); font-size: 10px; display: flex; align-items: center; justify-content: center; }
-.pico-box input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 12.5px; outline: none; margin-top: 5px; }
+/* PICO 區塊 */
+.pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pico-item { background: var(--bg3); border: 1px solid var(--border); padding: 10px; border-radius: 8px; }
+.pico-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
+.pico-item input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 13px; outline: none; }
 
-.nav-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-.ntab { padding: 9px 14px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text3); border: none; background: none; border-bottom: 2px solid transparent; transition: 0.15s; }
-.ntab.on { color: var(--accent2); border-bottom-color: var(--accent); }
+/* 結果卡片 */
+.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 16px; position: relative; transition: 0.2s; }
+.lit-card:hover { border-color: rgba(255,255,255,0.15); }
+.source-tag { position: absolute; top: 20px; right: 20px; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
+.card-title { font-size: 16px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 8px; padding-right: 120px; line-height: 1.4; }
+.card-title:hover { color: var(--accent); }
+.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 10px; }
+.card-tldr { font-size: 13px; color: var(--accent); background: rgba(59,130,246,0.06); padding: 10px; border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 12px; }
+.card-abstract { font-size: 13px; color: var(--text2); margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* 資料庫導向按鈕區 */
-.db-redirects { display: flex; gap: 8px; margin-bottom: 16px; display: none; }
-.db-link-btn { padding: 8px 12px; border-radius: var(--r); font-size: 12px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px; }
-.nature-btn { background: #e02424; color: #fff; }
-.sd-btn { background: #ff6a00; color: #fff; }
+/* 資料庫顏色標籤 */
+.tag-pubmed { background: rgba(59,130,246,0.1); color: var(--accent); }
+.tag-ss { background: rgba(139,92,246,0.1); color: var(--purple); }
+.tag-epmc { background: rgba(16,185,129,0.1); color: var(--green); }
+.tag-crossref { background: rgba(6,182,212,0.1); color: var(--cyan); }
 
-.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r2); padding: 16px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
-.card-title { font-size: 14px; font-weight: 600; color: var(--accent2); margin-bottom: 8px; text-decoration: none; display: block; }
-.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
-.card-abstract { font-size: 12.5px; color: var(--text2); line-height: 1.6; }
+/* 下載按鈕 */
+.pdf-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; background: var(--green); color: #fff; }
+.pdf-btn.core { background: var(--amber); }
 
-.panel { display: none; }
-.panel.on { display: block; }
-.empty-state { text-align: center; padding: 40px; color: var(--text3); }
-.loading { text-align: center; padding: 20px; color: var(--accent2); font-weight: 500; }
+.loading-box { text-align: center; padding: 60px; color: var(--accent); }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="logo-mark"><i class="ti ti-dna-2"></i></div>
+  <div class="logo-mark"><i class="ti ti-database"></i></div>
   <div>
-    <div class="brand-name">BioLitScreen Pro</div>
-    <div class="brand-tag">跨資料庫檢索系統 (PubMed / Nature / ScienceDirect)</div>
+    <div style="font-size:15px; font-weight:600">BioLitScreen Pro</div>
+    <div style="font-size:11px; color:var(--text3)">六合一實時文獻 & 全文檢索系統</div>
   </div>
 </header>
 
 <main class="shell">
   <div class="search-card">
-    <div class="search-main">
-      <div class="search-input-wrap"><i class="ti ti-search"></i><input type="text" id="mainQ" placeholder="輸入搜尋關鍵字..."></div>
-      <button class="btn primary" onclick="runSearch()"><i class="ti ti-search"></i> 執行全面搜尋</button>
+    <div class="search-input-group">
+      <div class="input-wrapper">
+        <i class="ti ti-search"></i>
+        <input type="text" id="mainQ" placeholder="輸入搜尋課題...">
+      </div>
+      <button class="btn-search" onclick="runUltraSearch()">
+        <i class="ti ti-bolt"></i> 執行檢索
+      </button>
     </div>
     <div class="pico-grid">
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">P</div>Population</div><input id="picoP"></div>
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">I</div>Intervention</div><input id="picoI"></div>
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">C</div>Comparison</div><input id="picoC"></div>
-      <div class="pico-box"><div class="pico-label"><div class="pico-badge">O</div>Outcome</div><input id="picoO"></div>
+      <div class="pico-item"><div class="pico-label">Population</div><input id="picoP" placeholder="目標群體"></div>
+      <div class="pico-item"><div class="pico-label">Intervention</div><input id="picoI" placeholder="干預措施"></div>
     </div>
   </div>
 
-  <div id="dbLinks" class="db-redirects">
-    <a href="#" id="natureLink" target="_blank" class="db-link-btn nature-btn"><i class="ti ti-external-link"></i> 開啟 Nature 搜尋結果</a>
-    <a href="#" id="sdLink" target="_blank" class="db-link-btn sd-btn"><i class="ti ti-external-link"></i> 開啟 ScienceDirect 搜尋結果</a>
-  </div>
-
-  <div class="nav-tabs">
-    <button class="ntab on" onclick="switchTab('search')">PubMed 實時結果</button>
-    <button class="ntab" onclick="switchTab('prisma')">檢索日誌</button>
-  </div>
-
-  <div id="panel-search" class="panel on">
-    <div id="resultsArea" class="empty-state">
-      <i class="ti ti-database-search" style="font-size:30px;display:block;margin-bottom:10px"></i>
-      <p>搜尋將會同步為您準備 Nature 與 ScienceDirect 的鏈接</p>
+  <div id="resultsArea">
+    <div style="text-align:center; padding:80px; color:var(--text3)">
+      <i class="ti ti-world-search" style="font-size:40px; margin-bottom:10px; display:block"></i>
+      <p>正在監聽 PubMed, Semantic Scholar, Europe PMC, Crossref...</p>
     </div>
-  </div>
-
-  <div id="panel-prisma" class="panel">
-    <div class="empty-state" id="logArea">尚未有搜尋活動</div>
   </div>
 </main>
 
 <script>
-function switchTab(id) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
-    document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
-    document.getElementById('panel-' + id).classList.add('on');
-    event.currentTarget.classList.add('on');
-}
-
-async function runSearch() {
-    const mainQ = document.getElementById('mainQ').value;
+async function runUltraSearch() {
+    const q = document.getElementById('mainQ').value;
     const p = document.getElementById('picoP').value;
     const i = document.getElementById('picoI').value;
-    const resultsArea = document.getElementById('resultsArea');
-    const dbLinks = document.getElementById('dbLinks');
+    if (!q && !p && !i) return;
 
-    if (!mainQ && !p && !i) { alert("請輸入搜尋內容"); return; }
+    const fullQuery = `${q} ${p} ${i}`.trim();
+    const area = document.getElementById('resultsArea');
+    area.innerHTML = '<div class="loading-box"><i class="ti ti-loader-2 ti-spin" style="font-size:24px"></i><p style="margin-top:10px">正在同步調取全球 6 個資料庫，請稍候...</p></div>';
 
-    const fullQuery = `${mainQ} ${p} ${i}`.trim();
-    
-    // 顯示外部鏈接按鈕
-    dbLinks.style.display = 'flex';
-    document.getElementById('natureLink').href = `https://www.nature.com/search?q=${encodeURIComponent(fullQuery)}`;
-    document.getElementById('sdLink').href = `https://www.sciencedirect.com/search?qs=${encodeURIComponent(fullQuery)}`;
-
-    resultsArea.innerHTML = '<div class="loading"><i class="ti ti-loader-2"></i> PubMed 資料檢索中...</div>';
-
-    // 1. PubMed API 邏輯
     try {
-        const searchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(fullQuery)}&retmode=json&retmax=8`;
-        const searchRes = await fetch(searchUrl);
-        const searchData = await searchRes.json();
-        const idList = searchData.esearchresult.idlist;
+        const [resPM, resSS, resEP, resCR] = await Promise.all([
+            fetchPubMed(fullQuery),
+            fetchSemanticScholar(fullQuery),
+            fetchEuropePMC(fullQuery),
+            fetchCrossref(fullQuery)
+        ]);
 
-        if (!idList || idList.length === 0) {
-            resultsArea.innerHTML = '<div class="empty-state">PubMed 未找到結果，建議查看上方外部資料庫鏈接。</div>';
-            return;
-        }
-
-        const summaryUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${idList.join(',')}&retmode=json`;
-        const summaryRes = await fetch(summaryUrl);
-        const summaryData = await summaryRes.json();
-
-        resultsArea.innerHTML = '';
-        idList.forEach(id => {
-            const article = summaryData.result[id];
-            const card = document.createElement('div');
-            card.className = 'lit-card';
-            card.innerHTML = `
-                <a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" class="card-title">${article.title}</a>
-                <div class="card-meta"><span>${article.pubdate}</span> | <span>PMID: ${id}</span></div>
-                <div class="card-abstract">來源：${article.source}。Nature 與 ScienceDirect 的結果請點擊上方紅色/橘色按鈕開啟。</div>
-            `;
-            resultsArea.appendChild(card);
-        });
-        
-        document.getElementById('logArea').innerHTML = `最後搜尋時間: ${new Date().toLocaleTimeString()}<br>關鍵字: ${fullQuery}`;
-
-    } catch (e) {
-        resultsArea.innerHTML = '<div class="empty-state">PubMed 連線異常。</div>';
+        const combined = [...resSS, ...resEP, ...resCR, ...resPM];
+        renderResults(combined);
+    } catch (err) {
+        area.innerHTML = '<div class="loading-box">請求超時，請檢查連線。</div>';
     }
+}
+
+// 1. PubMed
+async function fetchPubMed(q) {
+    try {
+        const r1 = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(q)}&retmode=json&retmax=4`).then(r=>r.json());
+        const ids = r1.esearchresult.idlist;
+        if (!ids.length) return [];
+        const r2 = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(r=>r.json());
+        return ids.map(id => ({
+            title: r2.result[id].title, date: r2.result[id].pubdate, author: r2.result[id].authors[0]?.name || 'N/A',
+            source: 'PubMed', tag: 'tag-pubmed', url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+            doi: r2.result[id].elocationid?.replace('doi: ', '')
+        }));
+    } catch { return []; }
+}
+
+// 2. Semantic Scholar
+async function fetchSemanticScholar(q) {
+    try {
+        const r = await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(q)}&limit=4&fields=title,authors,year,url,tldr,abstract,externalIds`).then(r=>r.json());
+        return (r.data || []).map(item => ({
+            title: item.title, date: item.year, author: item.authors[0]?.name || 'N/A',
+            tldr: item.tldr?.text, abstract: item.abstract, source: 'Semantic Scholar', tag: 'tag-ss',
+            url: item.url, doi: item.externalIds?.DOI
+        }));
+    } catch { return []; }
+}
+
+// 3. Europe PMC
+async function fetchEuropePMC(q) {
+    try {
+        const r = await fetch(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(q)}&format=json&pageSize=4`).then(r=>r.json());
+        return (r.resultList.result || []).map(item => ({
+            title: item.title, date: item.pubYear, author: item.authorString.split(',')[0],
+            abstract: item.abstractText, source: 'Europe PMC', tag: 'tag-epmc',
+            url: `https://europepmc.org/article/MED/${item.id}`, doi: item.doi
+        }));
+    } catch { return []; }
+}
+
+// 4. Crossref (新增)
+async function fetchCrossref(q) {
+    try {
+        const r = await fetch(`https://api.crossref.org/works?query=${encodeURIComponent(q)}&rows=4`).then(r=>r.json());
+        return (r.message.items || []).map(item => ({
+            title: item.title[0], date: item.created['date-parts'][0][0],
+            author: item.author ? item.author[0].family : 'N/A',
+            source: 'Crossref', tag: 'tag-crossref',
+            url: item.URL, doi: item.DOI
+        }));
+    } catch { return []; }
+}
+
+// --- PDF 定位 (Unpaywall + CORE) ---
+async function findPDF(doi) {
+    if (!doi) return null;
+    try {
+        const up = await fetch(`https://api.unpaywall.org/v2/${doi}?email=paper@edu.tw`).then(r=>r.json());
+        if (up.is_oa) return { url: up.best_oa_location.url_for_pdf, type: 'oa' };
+        
+        const core = await fetch(`https://api.core.ac.uk/v3/search/works?q=doi:"${doi}"`).then(r=>r.json());
+        if (core.results?.[0]?.downloadUrl) return { url: core.results[0].downloadUrl, type: 'core' };
+    } catch {}
+    return null;
+}
+
+function renderResults(items) {
+    const area = document.getElementById('resultsArea');
+    area.innerHTML = '';
+    
+    items.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'lit-card';
+        const docId = `pdf-${idx}`;
+        
+        card.innerHTML = `
+            <div class="source-tag ${item.tag}">${item.source}</div>
+            <a href="${item.url}" target="_blank" class="card-title">${item.title}</a>
+            <div class="card-meta">
+                <span><i class="ti ti-calendar"></i> ${item.date}</span>
+                <span><i class="ti ti-user"></i> ${item.author} et al.</span>
+                ${item.doi ? `<span style="opacity:0.5">DOI: ${item.doi}</span>` : ''}
+            </div>
+            ${item.tldr ? `<div class="card-tldr"><strong>核心摘要:</strong> ${item.tldr}</div>` : ''}
+            <div class="card-abstract">${item.abstract || '點擊標題開啟資料庫原文...'}</div>
+            <div id="${docId}"></div>
+        `;
+        area.appendChild(card);
+
+        if (item.doi) {
+            findPDF(item.doi).then(res => {
+                if (res) {
+                    const label = res.type === 'oa' ? '免費 PDF (Unpaywall)' : '全文備份 (CORE)';
+                    const cls = res.type === 'oa' ? '' : 'core';
+                    document.getElementById(docId).innerHTML = `<a href="${res.url}" target="_blank" class="pdf-btn ${cls}"><i class="ti ti-file-download"></i> ${label}</a>`;
+                }
+            });
+        }
+    });
 }
 </script>
 </body>
