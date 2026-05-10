@@ -21,8 +21,19 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .shell { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
 /* 搜尋區塊 */
-.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-.search-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.search-input-group { 
+  display: flex; 
+  gap: 10px; 
+  margin-bottom: 15px; 
+  flex-wrap: wrap; /* 關鍵：這行能讓按鈕在空間不足時自動跳到下一行 */
+}
+
+.btn-search {
+  /* ...現有樣式... */
+  white-space: nowrap; /* 防止按鈕內的文字斷行 */
+  flex-shrink: 0;      /* 防止按鈕被壓縮變形 */
+}
 .input-wrapper { position: relative; flex: 1; }
 .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
 .input-wrapper input { width: 100%; padding: 12px 14px 12px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; }
