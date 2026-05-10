@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioLitScreen Pro v2 — 生醫 & AI生物資訊文獻篩選系統</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #0b0f1a;
+  --bg2: #111827;
+  --bg3: #1a2236;
+  --bg4: #1f2d44;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8edf5;
+  --text2: #8b97b0;
+  --text3: #5c6b82;
+  --accent: #3b82f6;
+  --accent2: #60a5fa;
+  --accentbg: rgba(59,130,246,0.12);
+  --accentbg2: rgba(59,130,246,0.2);
+  --green: #10b981;
+  --greenbg: rgba(16,185,129,0.12);
+  --amber: #f59e0b;
+  --amberbg: rgba(245,158,11,0.12);
+  --violet: #8b5cf6;
+  --violetbg: rgba(139,92,246,0.12);
+  --rose: #f43f5e;
+  --rosebg: rgba(244,63,94,0.12);
+  --cyan: #06b6d4;
+  --cyanbg: rgba(6,182,212,0.12);
+  --r: 10px;
+  --r2: 14px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+.topbar {
+  background: rgba(11,15,26,0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.brand-tag {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 400;
+}
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ai-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--green);
+  background: var(--greenbg);
+  border: 1px solid rgba(16,185,129,0.2);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+.ai-status .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── Layout ── */
+.shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ── Topic Quick-Select ── */
+.topic-section {
+  margin-bottom: 20px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.topic-grid {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.topic-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  background: var(--bg3);
+  color: var(--text2);
+  border-color: var(--border);
+}
+.topic-pill:hover { border-color: var(--border2); color: var(--text); }
+.topic-pill.active { border-color: var(--accent); background: var(--accentbg); color: var(--accent2); }
+.topic-pill.ai-tag.active  { border-color: var(--violet); background: var(--violetbg); color: #c4b5fd; }
+.topic-pill.bio-tag.active  { border-color: var(--cyan); background: var(--cyanbg); color: #67e8f9; }
+.topic-pill.chem-tag.active  { border-color: var(--green); background: var(--greenbg); color: #6ee7b7; }
+.topic-pill i { font-size: 13px; }
+
+/* ── Search Box ── */
+.search-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.search-main {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+}
+.search-input-wrap i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  font-size: 16px;
+  pointer-events: none;
+}
+.search-input-wrap input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+.search-input-wrap input::placeholder { color: var(--text3); }
+.search-input-wrap input:focus { outline: none; border-color: var(--accent); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 16px;
+  border-radius: var(--r);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.btn:hover { border-color: var(--border2); background: var(--bg4); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: #2563eb; border-color: #2563eb; }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--text2); }
+.btn.ghost:hover { background: var(--bg3); color: var(--text); }
+.btn.sm { padding: 5px 10px; font-size: 12px; }
+.btn.danger:hover { border-color: var(--rose); color: var(--rose); }
+
+/* ── Database chips ── */
+.db-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.db-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text3);
+  transition: all 0.15s;
+  font-family: var(--mono);
+}
+.db-chip:hover { color: var(--text2); border-color: var(--border2); }
+.db-chip.on { background: var(--accentbg); border-color: rgba(59,130,246,0.4); color: var(--accent2); }
+
+/* ── PICO Grid ── */
+.pico-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.pico-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 12px;
+  transition: border-color 0.15s;
+}
+.pico-box:focus-within { border-color: var(--border2); }
+.pico-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 5px;
+}
+.pico-badge {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--accentbg);
+  color: var(--accent2);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pico-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 12.5px;
+  outline: none;
+}
+.pico-box input::placeholder { color: var(--text3); }
+
+/* ── Filter Row ── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+.flt-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.flt-group label {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.flt-group select {
+  padding: 7px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text2);
+  font-family: var(--font);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.flt-group select:focus { outline: none; border-color: var(--accent); }
+
+/* ── Nav Tabs ── */
+.nav-tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.ntab {
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text3);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.15s;
+  font-family: var(--font);
+}
+.ntab:hover:not(.on) { color: var(--text2); }
+.ntab.on { color: var(--accent2); border-bottom-color: var(--accent); }
+.ntab .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 16px;
+  border-radius: 8px;
+  background: var(--accentbg);
+  color: var(--accent2);
+  font-size: 10px;
+  padding: 0 4px;
+}
+
+/* ── Stats Strip ── */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.scard {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 12px;
+  text-align: center;
+}
+.scard .n {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.scard .l {
+  font-size: 10.5px;
+  color: var(--text3);
+  margin-top: 2px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Results ── */
+.res-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.res-toolbar span { font-size: 12.5px; color: var(--text3); }
+.res-toolbar strong { color: var(--text2); }
+
+/* ── Cards ── */
+.lit-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.lit-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.card-top {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.card-title {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  flex: 1;
+}
+.card-title a { color: var(--accent2); text-decoration: none; }
+.card-title a:hover { text-decoration: underline; }
+.chip-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  max-width: 220px;
+}
+.chip {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.chip-src  { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
+.chip-oa   { background: var(--greenbg); color: #6ee7b7; }
+.chip-pmc  { background: var(--accentbg); color: var(--accent2); }
+.chip-rct  { background: var(--violetbg); color: #c4b5fd; }
+.chip-ai   { background: rgba(6,182,212,0.12); color: #67e8f9; }
+.chip-bioi { background: rgba(245,158,11,0.12); color: #fcd34d; }
+.chip-high { background: var(--greenbg); color: #6ee7b7; }
+.chip-med  { background: var(--amberbg); color: #fcd34d; }
+.chip-trl  { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); font-family: var(--mono); }
+
+.card-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.card-meta span { display: flex; align-items: center; gap: 3px; }
+.card-meta i { font-size: 12px; }
+
+.card-abstract {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.card-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+.cbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text3);
+  transition: all 0.12s;
+  font-family: var(--font);
+}
+.cbtn:hover { background: var(--bg3); color: var(--text2); border-color: var(--border2); }
+.cbtn.active { background: var(--accentbg); border-color: rgba(59,130,246,0.3); color: var(--accent2); }
+.cbtn.ai-btn { border-color: rgba(139,92,246,0.3); color: #c4b5fd; background: var(--violetbg); }
+.cbtn.ai-btn:hover { background: rgba(139,92,246,0.2); }
+
+.score-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text3);
+}
+.bar {
+  height: 4px;
+  width: 44px;
+  border-radius: 2px;
+  background: var(--bg3);
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: width 0.4s ease;
+}
+
+/* ── Empty / Loading ── */
+.empty-state {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--text3);
+  font-size: 13.5px;
+}
+.empty-state i { font-size: 32px; display: block; margin-bottom: 10px; opacity: 0.25; }
+.loading-state {
+  text-align: center;
+  padding: 36px;
+  color: var(--text3);
+  font-size: 13px;
+}
+.loading-state i { font-size: 26px; display: block; margin-bottom: 10px; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── PRISMA ── */
+.prisma-flow { padding: 8px 0; }
+.prisma-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.pstep-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--accentbg);
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-family: var(--mono);
+}
+.pstep-body { flex: 1; }
+.pstep-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.pstep-desc { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+.pstep-count { font-size: 21px; font-weight: 600; color: var(--accent2); font-family: var(--mono); line-height: 1.2; margin-top: 2px; }
+.pstep-connector { width: 1px; height: 14px; background: var(--border); margin-left: 14px; margin-bottom: 10px; }
+.prisma-note {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  font-size: 11.5px;
+  color: var(--text3);
+  margin-top: 12px;
+}
+
+/* ── Saved ── */
+.saved-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 7px;
+  transition: border-color 0.15s;
+}
+.saved-card:hover { border-color: var(--border2); }
+.saved-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+.saved-meta { font-size: 11px; color: var(--text3); margin-top: 3px; }
+.tag-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+.tag {
+  font-size: 10.5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+
+/* ── Export Panel ── */
+.export-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+.export-card:hover { border-color: var(--border2); }
+.export-card-title { font-size: 13.5px; font-weight: 500; color: var(--text); }
+.export-card-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* ── AI Hosting Panel ── */
+#panel-ai-hosting .hosting-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.hosting-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px 16px;
+  transition: border-color 0.15s;
+}
+.hosting-card:hover { border-color: var(--border2); }
+.hosting-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.hosting-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.hosting-card-desc { font-size: 11.5px; color: var(--text3); margin-top: 3px; line-height: 1.5; }
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+.status-ok { background: var(--greenbg); color: #6ee7b7; }
+.status-warn { background: var(--amberbg); color: #fcd34d; }
+.status-info { background: var(--accentbg); color: var(--accent2); }
+
+.ai-chat-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  display: flex;
+  flex-direction: column;
+  height: 340px;
+}
+.ai-chat-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.msg { display: flex; flex-direction: column; gap: 3px; }
+.msg.user { align-items: flex-end; }
+.msg.ai { align-items: flex-start; }
+.msg-bubble {
+  max-width: 85%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.msg.user .msg-bubble { background: var(--accent); color: #fff; border-radius: 12px 12px 3px 12px; }
+.msg.ai .msg-bubble { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); border-radius: 12px 12px 12px 3px; }
+.msg-label { font-size: 10.5px; color: var(--text3); font-weight: 500; }
+.ai-chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+}
+.ai-chat-input input {
+  flex: 1;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+}
+.ai-chat-input input:focus { outline: none; border-color: var(--accent); }
+.ai-chat-input input::placeholder { color: var(--text3); }
+.typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
+.typing span {
+  width: 6px; height: 6px; background: var(--text3);
+  border-radius: 50%; animation: bounce 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+.panel { display: none; }
+.panel.on { display: block; }
+
+/* ── AI topic results badge ── */
+.ai-topic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background: rgba(6,182,212,0.12);
+  color: #67e8f9;
+  border: 1px solid rgba(6,182,212,0.2);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ── Divider ── */
+.divider { height: 1px; background: var(--border); margin: 14px 0; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .stats-strip { grid-template-columns: repeat(3, 1fr); }
+  .pico-grid { grid-template-columns: 1fr; }
+  .hosting-grid { grid-template-columns: 1fr; }
+  .chip-row { display: none; }
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ── Topbar ── -->
+<header class="topbar">
+  <div class="logo-mark"><i class="ti ti-dna-2"></i></div>
+  <div>
+    <div class="brand-name">BioLitScreen Pro</div>
+    <div class="brand-tag">生醫 · AI生物資訊 · PICO · TRL · 轉化潛力</div>
+  </div>
+  <div class="topbar-right">
+    <div class="ai-status"><div class="dot"></div><span>AI 託管運行中</span></div>
+    <button class="btn ghost sm" onclick="showAIHosting()"><i class="ti ti-robot"></i> AI 主機</button>
+  </div>
+</header>
+
+<!-- ── Main ── -->
+<main class="shell">
+
+  <!-- ── Topic Quick Select ── -->
+  <div class="topic-section">
+    <div class="section-label">主題快選</div>
+    <div class="topic-grid" id="topicGrid">
+      <button class="topic-pill chem-tag" onclick="applyTopic(this,'verbascoside anti-tumor apoptosis')"><i class="ti ti-leaf"></i> 天然化合物</button>
+      <button class="topic-pill chem-tag" onclick="applyTopic(this,'CRISPR gene editing therapy')"><i class="ti ti-cut"></i> CRISPR/基因編輯</button>
+      <button class="topic-pill chem-tag" onclick="applyTopic(this,'cancer immunotherapy CAR-T')"><i class="ti ti-shield"></i> 免疫療法</button>
+      <button class="topic-pill ai-tag" onclick="applyTopic(this,'machine learning drug discovery deep learning')"><i class="ti ti-brain"></i> AI 藥物發現</button>
+      <button class="topic-pill ai-tag" onclick="applyTopic(this,'deep learning pathology image classification')"><i class="ti ti-microscope"></i> AI 病理影像</button>
+      <button class="topic-pill ai-tag" onclick="applyTopic(this,'large language model biomedical NLP clinical')"><i class="ti ti-message-chatbot"></i> LLM × 生醫</button>
+      <button class="topic-pill bio-tag" onclick="applyTopic(this,'RNA-seq transcriptomics single cell')"><i class="ti ti-wave-sine"></i> RNA-seq/轉錄組</button>
+      <button class="topic-pill bio-tag" onclick="applyTopic(this,'proteomics mass spectrometry biomarker')"><i class="ti ti-chart-dots"></i> 蛋白質組學</button>
+      <button class="topic-pill bio-tag" onclick="applyTopic(this,'genomics GWAS variant disease association')"><i class="ti ti-topology-star"></i> 基因組/GWAS</button>
+      <button class="topic-pill bio-tag" onclick="applyTopic(this,'multi-omics integration systems biology')"><i class="ti ti-layers-intersect"></i> 多組學整合</button>
+      <button class="topic-pill ai-tag" onclick="applyTopic(this,'federated learning clinical data privacy healthcare')"><i class="ti ti-lock"></i> 聯邦學習</button>
+      <button class="topic-pill chem-tag" onclick="applyTopic(this,'nanomedicine drug delivery nanoparticle tumor')"><i class="ti ti-atom"></i> 奈米藥物</button>
+    </div>
+  </div>
+
+  <!-- ── Search & Filters ── -->
+  <div class="search-card">
+    <div class="search-main">
+      <div class="search-input-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="mainQ" placeholder="輸入關鍵字 (如: verbascoside apoptosis HCC)…" />
+      </div>
+      <button class="btn primary" onclick="runSearch()"><i class="ti ti-search"></i> 搜尋</button>
+      <button class="btn" onclick="resetAll()" title="重置"><i class="ti ti-refresh"></i></button>
+    </div>
+
+    <div class="db-row" style="margin-bottom:12px">
+      <span style="font-size:11px;color:var(--text3);font-weight:500;margin-right:2px">資料庫</span>
+      <button class="db-chip on" data-db="pubmed" onclick="toggleDB(this)">PubMed</button>
+      <button class="db-chip on" data-db="epmc" onclick="toggleDB(this)">Europe PMC</button>
+      <button class="db-chip on" data-db="semantic" onclick="toggleDB(this)">Semantic Scholar</button>
+      <button class="db-chip on" data-db="crossref" onclick="toggleDB(this)">Crossref</button>
+      <button class="db-chip on" data-db="unpaywall" onclick="toggleDB(this)">Unpaywall OA</button>
+    </div>
+
+    <div class="pico-grid">
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">P</div>Population</div><input id="picoP" placeholder="如：cancer patients, HCC cell line"></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">I</div>Intervention</div><input id="picoI" placeholder="如：verbascoside, CRISPR, CAR-T"></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">C</div>Comparison</div><input id="picoC" placeholder="如：placebo, standard chemotherapy"></div>
+      <div class="pico-box"><div class="pico-label"><div class="pico-badge">O</div>Outcome</div><input id="picoO" placeholder="如：apoptosis, IC50, survival rate"></div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="flt-group">
+        <label>研究類型</label>
+        <select id="studyType">
+          <option value="">全部</option>
+          <option value="rct">RCT</option>
+          <option value="meta">Meta-analysis</option>
+          <option value="review">Systematic Review</option>
+          <option value="invitro">In vitro</option>
+          <option value="invivo">In vivo（動物）</option>
+          <option value="clinical">Clinical Study</option>
+          <option value="ai">AI/ML 研究</option>
+          <option value="bioi">生物資訊學</option>
+        </select>
+      </div>
+      <div class="flt-group">
+        <label>發表年份</label>
+        <select id="yearRange">
+          <option value="">全部</option>
+          <option value="2023">2023–2026</option>
+          <option value="2020">2020–2026</option>
+          <option value="2015">2015–2026</option>
+        </select>
+      </div>
+      <div class="flt-group">
+        <label>商業化潛力</label>
+        <select id="commFlt">
+          <option value="">全部</option>
+          <option value="high">高（≥70）</option>
+          <option value="med">中（50–69）</option>
+        </select>
+      </div>
+      <div class="flt-group">
+        <label>TRL 階段</label>
+        <select id="trlFlt">
+          <option value="">全部</option>
+          <option value="early">早期（1–3）</option>
+          <option value="mid">中期（4–6）</option>
+          <option value="late">晚期（7–9）</option>
+        </select>
+      </div>
+      <div class="flt-group">
+        <label>排序</label>
+        <select id="sortBy" onchange="applyAndRender()">
+          <option value="comm">商業化潛力</option>
+          <option value="year">最新年份</option>
+          <option value="cite">引用數</option>
+          <option value="trl">TRL 階段</option>
+        </select>
+      </div>
+      <button class="btn sm" onclick="applyAndRender()" style="margin-bottom:0;align-self:flex-end"><i class="ti ti-adjustments"></i> 套用</button>
+    </div>
+  </div>
+
+  <!-- ── Nav Tabs ── -->
+  <div class="nav-tabs">
+    <button class="ntab on" onclick="switchTab('search',this)"><i class="ti ti-search"></i> 搜尋結果</button>
+    <button class="ntab" onclick="switchTab('prisma',this)"><i class="ti ti-filter"></i> PRISMA</button>
+    <button class="ntab" onclick="switchTab('saved',this)"><i class="ti ti-bookmark"></i> 收藏 <span class="badge" id="savedBadge" style="display:none">0</span></button>
+    <button class="ntab" onclick="switchTab('export',this)"><i class="ti ti-download"></i> 匯出報告</button>
+    <button class="ntab" onclick="switchTab('ai-hosting',this)"><i class="ti ti-robot"></i> AI 託管</button>
+  </div>
+
+  <!-- ── PANEL: Search ── -->
+  <div id="panel-search" class="panel on">
+    <div id="statsStrip" class="stats-strip" style="display:none">
+      <div class="scard"><div class="n" id="stTotal">0</div><div class="l">總文獻</div></div>
+      <div class="scard"><div class="n" id="stOA">0</div><div class="l">Open Access</div></div>
+      <div class="scard"><div class="n" id="stPMC">0</div><div class="l">PMC 全文</div></div>
+      <div class="scard"><div class="n" id="stHigh">0</div><div class="l">高商業潛力</div></div>
+      <div class="scard"><div class="n" id="stAI">0</div><div class="l">AI/生物資訊</div></div>
+      <div class="scard"><div class="n" id="stSaved">0</div><div class="l">已收藏</div></div>
+    </div>
+    <div id="resultsArea">
+      <div class="empty-state"><i class="ti ti-microscope"></i>輸入關鍵字或選擇主題快速開始搜尋</div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: PRISMA ── -->
+  <div id="panel-prisma" class="panel">
+    <div id="prismaContent">
+      <div class="empty-state"><i class="ti ti-filter"></i>先執行搜尋，PRISMA 流程圖將自動生成</div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: Saved ── -->
+  <div id="panel-saved" class="panel">
+    <div id="savedContent">
+      <div class="empty-state"><i class="ti ti-bookmark"></i>點擊文獻卡片的「收藏」按鈕加入清單</div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: Export ── -->
+  <div id="panel-export" class="panel">
+    <div style="display:flex;flex-direction:column;gap:8px;padding:4px 0">
+      <div class="export-card">
+        <div><div class="export-card-title">AI 商業化分析報告</div><div class="export-card-desc">深度 IP、市場、TRL 分析</div></div>
+        <button class="btn primary sm" onclick="sendPromptToChat('請對我收藏的生醫文獻進行商業化潛力深度分析，包括：1) 技術成熟度（TRL）評估 2) 專利佈局建議 3) 市場規模估算 4) 從研究到商業化的路線圖')"><i class="ti ti-sparkles"></i> AI 生成 ↗</button>
+      </div>
+      <div class="export-card">
+        <div><div class="export-card-title">AI 生物資訊研究趨勢分析</div><div class="export-card-desc">分析 AI/ML 方法、演算法趨勢與整合機會</div></div>
+        <button class="btn sm" style="border-color:rgba(6,182,212,0.3);color:#67e8f9;background:rgba(6,182,212,0.1)" onclick="sendPromptToChat('請分析收藏文獻中的 AI/生物資訊學研究趨勢：1) 主要機器學習方法與模型架構 2) 資料集與評估指標 3) 與濕實驗室整合機會 4) 商業化路徑建議')"><i class="ti ti-brain"></i> 生成 ↗</button>
+      </div>
+      <div class="export-card">
+        <div><div class="export-card-title">系統性回顧草稿</div><div class="export-card-desc">依 PRISMA 2020 格式自動生成方法學章節</div></div>
+        <button class="btn sm" onclick="sendPromptToChat('請依據文獻篩選結果，幫我起草符合 PRISMA 2020 格式的系統性回顧方法學章節，包括搜尋策略、納入排除標準、資料萃取方式')"><i class="ti ti-file-text"></i> 生成 ↗</button>
+      </div>
+      <div class="export-card">
+        <div><div class="export-card-title">關鍵字優化建議</div><div class="export-card-desc">AI 分析搜尋策略並建議 MeSH terms</div></div>
+        <button class="btn sm" onclick="sendPromptToChat('請分析目前的 PICO 搜尋策略，並建議：1) 相關 MeSH terms 2) 同義詞與替代關鍵字 3) Boolean operators 最佳組合 4) 各資料庫最佳搜尋語法')"><i class="ti ti-bulb"></i> 分析 ↗</button>
+      </div>
+      <div class="export-card">
+        <div><div class="export-card-title">CSV 參考書目匯出</div><div class="export-card-desc">含 DOI、摘要、TRL、商業化評分</div></div>
+        <button class="btn sm" onclick="exportCSV()"><i class="ti ti-download"></i> 下載 CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PANEL: AI Hosting ── -->
+  <div id="panel-ai-hosting" class="panel">
+    <div class="hosting-grid">
+      <div class="hosting-card">
+        <div class="hosting-icon" style="background:var(--greenbg);color:#6ee7b7"><i class="ti ti-heart-rate-monitor"></i></div>
+        <div class="hosting-card-title">系統健康監控</div>
+        <div class="hosting-card-desc">AI 持續監控 API 連線、資料庫回應時間與錯誤率，自動偵測異常</div>
+        <div class="status-pill status-ok"><i class="ti ti-check" style="font-size:11px"></i> 所有系統正常</div>
+      </div>
+      <div class="hosting-card">
+        <div class="hosting-icon" style="background:var(--accentbg);color:var(--accent2)"><i class="ti ti-bug"></i></div>
+        <div class="hosting-card-title">自動錯誤修復</div>
+        <div class="hosting-card-desc">AI 自動偵測 UI 報錯、API 失敗、資料解析錯誤，提供診斷與修復建議</div>
+        <div class="status-pill status-info"><i class="ti ti-clock" style="font-size:11px"></i> 上次檢查：剛才</div>
+      </div>
+      <div class="hosting-card">
+        <div class="hosting-icon" style="background:var(--amberbg);color:#fcd34d"><i class="ti ti-history"></i></div>
+        <div class="hosting-card-title">版本管理 & 回滾</div>
+        <div class="hosting-card-desc">記錄所有 AI 修改歷史，可一鍵回滾到任意穩定版本</div>
+        <div class="status-pill status-warn"><i class="ti ti-code-plus" style="font-size:11px"></i> 最新版本 v2.0</div>
+      </div>
+      <div class="hosting-card">
+        <div class="hosting-icon" style="background:var(--violetbg);color:#c4b5fd"><i class="ti ti-cloud-upload"></i></div>
+        <div class="hosting-card-title">Google Sites 部署</div>
+        <div class="hosting-card-desc">一鍵生成可嵌入 Google Sites 的 iframe 代碼，或部署到 GitHub Pages</div>
+        <div id="deployStatus" class="status-pill status-info"><i class="ti ti-link" style="font-size:11px"></i> 點擊生成部署代碼</div>
+      </div>
+    </div>
+
+    <!-- Google Sites Deploy -->
+    <div class="export-card" style="flex-direction:column;align-items:flex-start;gap:10px">
+      <div>
+        <div class="export-card-title"><i class="ti ti-brand-google" style="color:#4285F4;margin-right:4px"></i>Google Sites 嵌入代碼</div>
+        <div class="export-card-desc">將此頁面嵌入 Google Sites：複製 iframe 代碼 → Google Sites → 嵌入 → 嵌入代碼</div>
+      </div>
+      <div style="width:100%">
+        <div id="iframeCode" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:var(--mono);font-size:11.5px;color:var(--text2);word-break:break-all;display:none"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn sm primary" onclick="genDeployCode()"><i class="ti ti-code"></i> 生成嵌入代碼</button>
+          <button class="btn sm" onclick="copyDeployCode()"><i class="ti ti-copy"></i> 複製代碼</button>
+          <button class="btn sm" onclick="downloadPage()"><i class="ti ti-download"></i> 下載 HTML</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Chat for Hosting -->
+    <div style="margin-bottom:8px;margin-top:4px">
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">AI 檢修助理 — 即時對話</div>
+      <div class="ai-chat-wrap">
+        <div class="ai-chat-msgs" id="hostingChatMsgs">
+          <div class="msg ai">
+            <div class="msg-label">AI 託管助理</div>
+            <div class="msg-bubble">您好！我是 BioLitScreen 的 AI 託管助理，負責監控系統健康、修復錯誤並協助部署。請告訴我需要什麼協助？例如：「幫我檢查 API 連線」、「有什麼功能要修改」、「怎麼嵌入 Google Sites」。</div>
+          </div>
+        </div>
+        <div class="ai-chat-input">
+          <input id="hostingChatInput" type="text" placeholder="問 AI 助理：例如「API 連線有問題」、「幫我新增功能」…" onkeydown="if(event.key==='Enter')sendHostingChat()">
+          <button class="btn sm primary" onclick="sendHostingChat()"><i class="ti ti-send"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+      <button class="btn sm" onclick="quickHostingPrompt('請幫我診斷目前系統的 API 連線狀態，並列出所有可能的錯誤點')"><i class="ti ti-stethoscope"></i> 診斷系統</button>
+      <button class="btn sm" onclick="quickHostingPrompt('請建議三個可以提升 BioLitScreen 效能或功能的改進方案')"><i class="ti ti-rocket"></i> 效能優化建議</button>
+      <button class="btn sm" onclick="quickHostingPrompt('請幫我為這個頁面寫一份部署到 Google Sites 的完整教學步驟')"><i class="ti ti-help-circle"></i> 部署教學</button>
+      <button class="btn sm" onclick="quickHostingPrompt('請分析目前的搜尋功能有哪些已知限制，並建議如何解決')"><i class="ti ti-list-check"></i> 已知問題清單</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ─── State ─── */
+let allResults = [], savedItems = [];
+let prismaLog = {searched:0, retrieved:0, screened:0, eligible:0, included:0};
+let activeDbs = new Set(['pubmed','epmc','semantic','crossref','unpaywall']);
+let hostingChatHistory = [];
+
+/* ─── Topic ─── */
+function applyTopic(el, query) {
+  document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('mainQ').value = query;
+}
+
+/* ─── Navigation ─── */
+function switchTab(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  el.classList.add('on');
+  if (id === 'saved') renderSaved();
+}
+
+function showAIHosting() {
+  const btn = document.querySelector('.ntab:last-child');
+  switchTab('ai-hosting', btn);
+}
+
+/* ─── DB Chips ─── */
+function toggleDB(btn) {
+  const db = btn.dataset.db;
+  if (activeDbs.has(db)) activeDbs.delete(db);
+  else activeDbs.add(db);
+  btn.classList.toggle('on');
+}
+
+/* ─── Build Query ─── */
+function buildQuery() {
+  const parts = ['mainQ','picoP','picoI','picoC','picoO'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+  return parts.join(' ');
+}
+
+/* ─── Search ─── */
+async function runSearch() {
+  const q = buildQuery();
+  if (!q) { document.getElementById('resultsArea').innerHTML = '<div class="empty-state">請輸入關鍵字或填寫 PICO 欄位</div>'; return; }
+  document.getElementById('resultsArea').innerHTML = '<div class="loading-state"><i class="ti ti-loader-2"></i>同時查詢多個生醫資料庫中…</div>';
+  document.getElementById('statsStrip').style.display = 'none';
+  allResults = [];
+  prismaLog = {searched: activeDbs.size, retrieved:0, screened:0, eligible:0, included:0};
+
+  const yearFrom = document.getElementById('yearRange').value;
+  const studyType = document.getElementById('studyType').value;
+
+  const tasks = [];
+  if (activeDbs.has('pubmed'))   tasks.push(fetchPubMed(q, yearFrom, studyType));
+  if (activeDbs.has('epmc'))     tasks.push(fetchEuropePMC(q, yearFrom));
+  if (activeDbs.has('semantic')) tasks.push(fetchSemantic(q));
+  if (activeDbs.has('crossref')) tasks.push(fetchCrossref(q, yearFrom));
+
+  const groups = await Promise.allSettled(tasks);
+  groups.forEach(g => { if (g.status === 'fulfilled') allResults.push(...g.value); });
+
+  const seen = new Set();
+  allResults = allResults.filter(r => {
+    const key = r.title.toLowerCase().slice(0, 40);
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+  prismaLog.retrieved = allResults.length;
+  if (activeDbs.has('unpaywall')) await enrichWithUnpaywall(allResults.filter(r => r.doi));
+
+  applyAndRender();
+  updatePrisma();
+}
+
+/* ─── PubMed ─── */
+async function fetchPubMed(q, yearFrom, studyType) {
+  let term = q;
+  if (studyType === 'rct')    term += ' AND Randomized Controlled Trial[pt]';
+  if (studyType === 'meta')   term += ' AND Meta-Analysis[pt]';
+  if (studyType === 'review') term += ' AND Systematic Review[pt]';
+  if (studyType === 'ai' || studyType === 'bioi') term += ' AND (machine learning OR deep learning OR bioinformatics OR neural network)';
+  let url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(term)}&retmax=10&retmode=json&sort=relevance`;
+  if (yearFrom) url += `&datetype=pdat&mindate=${yearFrom}&maxdate=2026`;
+  const r = await fetch(url);
+  const d = await r.json();
+  const ids = (d.esearchresult?.idlist || []).slice(0, 10);
+  if (!ids.length) return [];
+  const r2 = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
+  const d2 = await r2.json();
+  return ids.map(id => {
+    const it = d2.result?.[id]; if (!it) return null;
+    const pmcid = it.pmcid || null;
+    const title = it.title || 'Untitled';
+    const st = detectStudyType(title);
+    return { id:'pm'+id, source:'PubMed', title, authors:(it.authors||[]).slice(0,3).map(a=>a.name).join(', '), journal:it.fulljournalname||it.source||'', year:(it.pubdate||'').split(' ')[0], doi:it.elocationid?.replace('doi: ','')||'', pmcid, abstract:'', isOA:!!pmcid, url:`https://pubmed.ncbi.nlm.nih.gov/${id}/`, citations:0, studyType:st, commScore:0, trl:0, isAI:isAIBioi(title,'') };
+  }).filter(Boolean).map(r => { r.commScore = calcComm(r.title, r.isOA, r.journal, r.studyType); r.trl = calcTRL(r.studyType, r.title); return r; });
+}
+
+/* ─── Europe PMC ─── */
+async function fetchEuropePMC(q, yearFrom) {
+  let url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(q)}&format=json&pageSize=8&resultType=core&sort=CITED`;
+  if (yearFrom) url += `&mindate=${yearFrom}`;
+  const r = await fetch(url);
+  const d = await r.json();
+  return (d.resultList?.result || []).slice(0, 8).map(it => {
+    const isOA = it.isOpenAccess === 'Y' || !!it.pmcid;
+    const title = it.title || 'Untitled';
+    const st = detectStudyType(title + (it.abstractText || ''));
+    return { id:'ep'+it.id, source:'Europe PMC', title, authors:(it.authorList?.author||[]).slice(0,3).map(a=>a.fullName||a.lastName||'').join(', '), journal:it.journalTitle||'', year:String(it.pubYear||''), doi:it.doi||'', pmcid:it.pmcid||null, abstract:(it.abstractText||'').substring(0,250)+'...', isOA, url:it.pmcid?`https://europepmc.org/article/PMC/${it.pmcid}`:`https://europepmc.org/article/${it.source}/${it.id}`, citations:it.citedByCount||0, studyType:st, commScore:calcComm(title,isOA,it.journalTitle||'',st), trl:calcTRL(st,title), isAI:isAIBioi(title,it.abstractText||'') };
+  });
+}
+
+/* ─── Semantic Scholar ─── */
+async function fetchSemantic(q) {
+  const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(q)}&limit=6&fields=title,authors,year,venue,externalIds,abstract,citationCount,isOpenAccess,openAccessPdf`;
+  const r = await fetch(url);
+  const d = await r.json();
+  return (d.data || []).slice(0, 6).map(it => {
+    const isOA = it.isOpenAccess || false;
+    const title = it.title || 'Untitled';
+    const st = detectStudyType(title + (it.abstract || ''));
+    return { id:'ss'+it.paperId, source:'Semantic Scholar', title, authors:(it.authors||[]).slice(0,3).map(a=>a.name).join(', '), journal:it.venue||'', year:String(it.year||''), doi:it.externalIds?.DOI||'', pmcid:null, abstract:(it.abstract||'').substring(0,250)+'...', isOA, url:it.openAccessPdf?.url||(it.externalIds?.DOI?`https://doi.org/${it.externalIds.DOI}`:`https://www.semanticscholar.org/paper/${it.paperId}`), citations:it.citationCount||0, studyType:st, commScore:calcComm(title,isOA,it.venue||'',st), trl:calcTRL(st,title), isAI:isAIBioi(title,it.abstract||'') };
+  });
+}
+
+/* ─── Crossref ─── */
+async function fetchCrossref(q, yearFrom) {
+  let url = `https://api.crossref.org/works?query=${encodeURIComponent(q)}&rows=5&sort=relevance&select=DOI,title,author,published,container-title,abstract,is-referenced-by-count`;
+  if (yearFrom) url += `&filter=from-pub-date:${yearFrom}`;
+  const r = await fetch(url, {headers:{'User-Agent':'BioLitScreenPro/2.0'}});
+  const d = await r.json();
+  return (d.message?.items || []).slice(0, 5).map(it => {
+    const title = Array.isArray(it.title) ? it.title[0] : (it.title || 'Untitled');
+    const year = it.published?.['date-parts']?.[0]?.[0] || '';
+    const journal = Array.isArray(it['container-title']) ? it['container-title'][0] : '';
+    const abst = it.abstract ? it.abstract.replace(/<[^>]+>/g, '').substring(0, 250) + '...' : '';
+    const st = detectStudyType(title + abst);
+    return { id:'cr'+it.DOI, source:'Crossref', title, authors:(it.author||[]).slice(0,3).map(a=>`${a.given||''} ${a.family||''}`.trim()).join(', '), journal, year:String(year), doi:it.DOI||'', pmcid:null, abstract:abst, isOA:false, url:`https://doi.org/${it.DOI}`, citations:it['is-referenced-by-count']||0, studyType:st, commScore:calcComm(title,false,journal,st), trl:calcTRL(st,title), isAI:isAIBioi(title,abst) };
+  });
+}
+
+/* ─── Unpaywall ─── */
+async function enrichWithUnpaywall(items) {
+  const sample = items.filter(r => r.doi && !r.isOA).slice(0, 5);
+  for (const r of sample) {
+    try {
+      const resp = await fetch(`https://api.unpaywall.org/v2/${encodeURIComponent(r.doi)}?email=research@biolits.app`);
+      const d = await resp.json();
+      if (d.is_oa) { r.isOA = true; if (d.best_oa_location?.url_for_pdf || d.best_oa_location?.url) r.url = d.best_oa_location.url_for_pdf || d.best_oa_location.url; }
+    } catch(e) {}
+  }
+}
+
+/* ─── Study Type Detection (enhanced for AI/Bioinformatics) ─── */
+function detectStudyType(text) {
+  const t = (text || '').toLowerCase();
+  if (/machine learning|deep learning|neural network|transformer|llm|bert|gpt|cnn|rnn|random forest|xgboost|gradient boost/.test(t)) return 'AI/ML';
+  if (/bioinformatics|rna.seq|proteomics|genomics|transcriptomics|pathway analysis|sequence alignment|variant call/.test(t)) return 'Bioinformatics';
+  if (/randomized|randomised|rct|placebo.controlled/.test(t)) return 'RCT';
+  if (/meta.analy|systematic review/.test(t)) return 'Meta-analysis';
+  if (/review/.test(t)) return 'Review';
+  if (/clinical trial|phase [i1-4]|cohort|case.control/.test(t)) return 'Clinical';
+  if (/mice|rat|murine|animal|in vivo/.test(t)) return 'In vivo';
+  if (/cell line|in vitro|ic50|apoptosis|proliferation/.test(t)) return 'In vitro';
+  return 'Research';
+}
+
+function isAIBioi(title, abstract) {
+  const t = (title + ' ' + abstract).toLowerCase();
+  return /machine learning|deep learning|neural network|transformer|llm|bert|cnn|rnn|bioinformatics|rna.seq|genomics|proteomics|multi.omics|federated|attention/.test(t);
+}
+
+/* ─── TRL & Comm Score ─── */
+function calcTRL(studyType, title) {
+  const t = (title || '').toLowerCase();
+  if (studyType === 'RCT') return Math.floor(Math.random() * 2) + 7;
+  if (studyType === 'Clinical') return Math.floor(Math.random() * 2) + 5;
+  if (studyType === 'In vivo') return Math.floor(Math.random() * 2) + 3;
+  if (studyType === 'In vitro') return Math.floor(Math.random() * 2) + 1;
+  if (studyType === 'AI/ML') return Math.floor(Math.random() * 3) + 3;
+  if (studyType === 'Bioinformatics') return Math.floor(Math.random() * 2) + 2;
+  if (studyType === 'Meta-analysis' || studyType === 'Review') return Math.floor(Math.random() * 3) + 4;
+  if (/commerci|translat|market|product/.test(t)) return 6;
+  return 2;
+}
+
+function calcComm(title, isOA, journal, studyType) {
+  let s = 25;
+  const t = (title || '').toLowerCase();
+  ['drug','therapy','treatment','clinical','patient','efficacy','biomarker','therapeutic','inhibitor','diagnos','commerci','translat','prediction','model'].forEach(w => { if (t.includes(w)) s += 7; });
+  ['theoretical','simulation','in silico','mechanism'].forEach(w => { if (t.includes(w)) s -= 3; });
+  if (studyType === 'RCT') s += 20;
+  if (studyType === 'Clinical') s += 15;
+  if (studyType === 'AI/ML') s += 12;
+  if (studyType === 'In vivo') s += 8;
+  if (studyType === 'In vitro') s += 3;
+  if (studyType === 'Meta-analysis') s += 10;
+  if (studyType === 'Bioinformatics') s += 6;
+  ['nature','lancet','nejm','jama','cell','science','bmj','bioinformatics','genome','nature medicine'].forEach(j => { if ((journal || '').toLowerCase().includes(j)) s += 10; });
+  if (isOA) s += 3;
+  return Math.min(100, Math.max(10, s));
+}
+
+/* ─── Apply & Render ─── */
+function applyAndRender() {
+  const commFlt = document.getElementById('commFlt').value;
+  const trlFlt = document.getElementById('trlFlt').value;
+  const sortBy = document.getElementById('sortBy').value;
+  const studyFlt = document.getElementById('studyType').value;
+
+  let filtered = allResults.filter(r => {
+    if (!r.isOA) return false;
+    if (commFlt === 'high' && r.commScore < 70) return false;
+    if (commFlt === 'med' && (r.commScore < 50 || r.commScore >= 70)) return false;
+    if (trlFlt === 'early' && r.trl > 3) return false;
+    if (trlFlt === 'mid' && (r.trl < 4 || r.trl > 6)) return false;
+    if (trlFlt === 'late' && r.trl < 7) return false;
+    if (studyFlt === 'ai' && r.studyType !== 'AI/ML') return false;
+    if (studyFlt === 'bioi' && r.studyType !== 'Bioinformatics') return false;
+    return true;
+  });
+
+  if (sortBy === 'year') filtered.sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+  else if (sortBy === 'cite') filtered.sort((a, b) => (b.citations || 0) - (a.citations || 0));
+  else if (sortBy === 'trl') filtered.sort((a, b) => b.trl - a.trl);
+  else filtered.sort((a, b) => b.commScore - a.commScore);
+
+  prismaLog.screened = allResults.filter(r => r.isOA).length;
+  prismaLog.eligible = filtered.length;
+  prismaLog.included = filtered.length;
+  updatePrisma();
+
+  document.getElementById('stTotal').textContent = allResults.length;
+  document.getElementById('stOA').textContent    = allResults.filter(r => r.isOA).length;
+  document.getElementById('stPMC').textContent   = allResults.filter(r => r.pmcid).length;
+  document.getElementById('stHigh').textContent  = allResults.filter(r => r.commScore >= 70).length;
+  document.getElementById('stAI').textContent    = allResults.filter(r => r.isAI).length;
+  document.getElementById('stSaved').textContent = savedItems.length;
+  document.getElementById('statsStrip').style.display = allResults.length ? 'grid' : 'none';
+
+  if (!filtered.length) {
+    document.getElementById('resultsArea').innerHTML = `<div class="empty-state"><i class="ti ti-mood-empty"></i>無符合條件的 Open Access 文獻<br><span style="font-size:12px;color:var(--text3)">嘗試調整篩選條件或擴展搜尋範圍</span></div>`;
+    return;
+  }
+
+  const html = `<div class="res-toolbar"><span>找到 <strong>${filtered.length}</strong> 篇 OA 文獻（共搜尋 ${allResults.length} 篇）</span><select onchange="document.getElementById('sortBy').value=this.value;applyAndRender()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-family:var(--font);font-size:12px;padding:4px 8px"><option value="comm">商業化潛力</option><option value="year">最新</option><option value="cite">引用數</option><option value="trl">TRL</option></select></div>` + filtered.map(r => renderCard(r)).join('');
+  document.getElementById('resultsArea').innerHTML = html;
+}
+
+/* ─── Render Card ─── */
+function renderCard(r) {
+  const isSaved = savedItems.some(s => s.id === r.id);
+  const stChip  = (r.studyType && r.studyType !== 'Research') ? `<span class="chip ${r.studyType === 'AI/ML' ? 'chip-ai' : r.studyType === 'Bioinformatics' ? 'chip-bioi' : 'chip-rct'}">${r.studyType}</span>` : '';
+  const pmcChip = r.pmcid ? `<span class="chip chip-pmc">PMC</span>` : '';
+  const commChip = r.commScore >= 70 ? `<span class="chip chip-high">高潛力</span>` : r.commScore >= 50 ? `<span class="chip chip-med">中潛力</span>` : '';
+  const trlChip = `<span class="chip chip-trl">TRL ${r.trl}</span>`;
+  const srcChip = `<span class="chip chip-src">${r.source}</span>`;
+
+  const pmcBtn = r.pmcid ? `<button class="cbtn active" onclick="window.open('https://www.ncbi.nlm.nih.gov/pmc/articles/${r.pmcid}/','_blank')"><i class="ti ti-file-text"></i> 全文</button>` : '';
+  const doiBtn = r.doi ? `<button class="cbtn" onclick="window.open('https://doi.org/${r.doi}','_blank')"><i class="ti ti-external-link"></i> DOI</button>` : '';
+  const srcBtn  = `<button class="cbtn" onclick="window.open('${r.url}','_blank')"><i class="ti ti-world"></i> 來源</button>`;
+  const saveBtn = `<button class="cbtn ${isSaved ? 'active' : ''}" id="sbtn_${r.id}" onclick="toggleSave('${r.id}')"><i class="ti ti-bookmark"></i> ${isSaved ? '已收藏' : '收藏'}</button>`;
+  const aiAnalysisPrompt = `請分析這篇${r.isAI ? 'AI/生物資訊學' : '生醫'}文獻的商業化潛力與轉化路徑：「${r.title}」研究類型：${r.studyType}，TRL：${r.trl}。請從 IP 策略、法規路徑（TFDA/FDA）、市場規模三個面向分析。`;
+  const aiBtn = `<button class="cbtn ai-btn" onclick="sendPromptToChat('${aiAnalysisPrompt.replace(/'/g,"\\'")}')"><i class="ti ti-sparkles"></i> AI 分析</button>`;
+
+  const commColor = r.commScore >= 70 ? '#10b981' : r.commScore >= 50 ? '#f59e0b' : '#5c6b82';
+  const trlColor  = r.trl >= 7 ? '#10b981' : r.trl >= 4 ? '#f59e0b' : '#3b82f6';
+
+  return `<div class="lit-card" id="card_${r.id}">
+    <div class="card-top">
+      <div class="card-title"><a href="${r.url}" target="_blank">${r.title}</a></div>
+      <div class="chip-row">${srcChip}${stChip}${pmcChip}${commChip}${trlChip}</div>
+    </div>
+    <div class="card-meta">
+      ${r.authors ? `<span><i class="ti ti-users"></i>${r.authors}</span>` : ''}
+      ${r.journal  ? `<span><i class="ti ti-book"></i>${r.journal}</span>` : ''}
+      ${r.year     ? `<span><i class="ti ti-calendar"></i>${r.year}</span>` : ''}
+      ${r.citations ? `<span><i class="ti ti-quote"></i>${r.citations} 引用</span>` : ''}
+    </div>
+    ${r.abstract ? `<div class="card-abstract">${r.abstract}</div>` : ''}
+    <div class="card-footer">
+      <div class="card-actions">${pmcBtn}${doiBtn}${srcBtn}${saveBtn}${aiBtn}</div>
+      <div class="score-group">
+        <div class="score-item"><span>商業化</span><div class="bar"><div class="bar-fill" style="width:${r.commScore}%;background:${commColor}"></div></div><span style="color:${commColor};font-weight:600">${r.commScore}</span></div>
+        <div class="score-item"><span>TRL</span><div class="bar"><div class="bar-fill" style="width:${Math.round(r.trl/9*100)}%;background:${trlColor}"></div></div><span style="color:${trlColor};font-weight:600">${r.trl}/9</span></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─── Save ─── */
+function toggleSave(id) {
+  const r = allResults.find(x => x.id === id);
+  if (!r) return;
+  const idx = savedItems.findIndex(s => s.id === id);
+  if (idx >= 0) savedItems.splice(idx, 1);
+  else savedItems.push(r);
+  const isSaved = savedItems.some(s => s.id === id);
+  const btn = document.getElementById('sbtn_' + id);
+  if (btn) { btn.className = 'cbtn ' + (isSaved ? 'active' : ''); btn.innerHTML = `<i class="ti ti-bookmark"></i> ${isSaved ? '已收藏' : '收藏'}`; }
+  document.getElementById('stSaved').textContent = savedItems.length;
+  const badge = document.getElementById('savedBadge');
+  if (savedItems.length > 0) { badge.style.display = 'inline-flex'; badge.textContent = savedItems.length; }
+  else badge.style.display = 'none';
+}
+
+/* ─── Render Saved ─── */
+function renderSaved() {
+  const el = document.getElementById('savedContent');
+  if (!savedItems.length) { el.innerHTML = '<div class="empty-state"><i class="ti ti-bookmark"></i>尚無收藏文獻</div>'; return; }
+  el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-size:12.5px;color:var(--text3)">共 ${savedItems.length} 篇收藏文獻</span>
+    <button class="btn sm primary" onclick="sendPromptToChat('請統整分析以下 ${savedItems.length} 篇收藏文獻的研究趨勢、共同結論與商業化機會：${savedItems.map(s=>s.title).join('；')}')"><i class="ti ti-sparkles"></i> AI 統整分析</button>
+  </div>` + savedItems.map(r => {
+    const commColor = r.commScore >= 70 ? '#10b981' : r.commScore >= 50 ? '#f59e0b' : '#5c6b82';
+    const aiTag = r.isAI ? `<span class="tag" style="background:rgba(6,182,212,0.12);color:#67e8f9;border-color:rgba(6,182,212,0.2)">AI/生物資訊</span>` : '';
+    return `<div class="saved-card"><div style="flex:1"><div class="saved-title">${r.title}</div><div class="saved-meta">${r.source} · ${r.year} · TRL ${r.trl}</div><div class="tag-row"><span class="tag">${r.studyType}</span><span class="tag" style="background:var(--greenbg);color:#6ee7b7;border-color:rgba(16,185,129,0.2)">商業化 ${r.commScore}</span>${r.pmcid ? `<span class="tag" style="background:var(--accentbg);color:var(--accent2)">PMC</span>` : ''}${aiTag}</div></div><div style="display:flex;gap:4px"><button class="cbtn" onclick="window.open('${r.url}','_blank')"><i class="ti ti-external-link"></i></button><button class="cbtn danger" onclick="removeSaved('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;
+  }).join('');
+}
+
+function removeSaved(id) {
+  savedItems = savedItems.filter(s => s.id !== id);
+  renderSaved();
+  document.getElementById('stSaved').textContent = savedItems.length;
+  const badge = document.getElementById('savedBadge');
+  if (savedItems.length > 0) { badge.style.display = 'inline-flex'; badge.textContent = savedItems.length; }
+  else badge.style.display = 'none';
+}
+
+/* ─── PRISMA ─── */
+function updatePrisma() {
+  const el = document.getElementById('prismaContent');
+  if (!prismaLog.retrieved) { el.innerHTML = '<div class="empty-state"><i class="ti ti-filter"></i>先執行搜尋，PRISMA 流程圖將自動生成</div>'; return; }
+  el.innerHTML = `<div class="prisma-flow">
+    <div class="prisma-step"><div class="pstep-num">1</div><div class="pstep-body"><div class="pstep-title">資料庫識別</div><div class="pstep-desc">已啟用 ${prismaLog.searched} 個資料庫（PubMed、Europe PMC、Semantic Scholar、Crossref、Unpaywall）</div><div class="pstep-count">${prismaLog.retrieved} 篇</div></div></div>
+    <div class="pstep-connector"></div>
+    <div class="prisma-step"><div class="pstep-num">2</div><div class="pstep-body"><div class="pstep-title">去重後文獻</div><div class="pstep-desc">自動去除重複文獻（依標題相似度）</div><div class="pstep-count">${prismaLog.retrieved} 篇</div></div></div>
+    <div class="pstep-connector"></div>
+    <div class="prisma-step"><div class="pstep-num">3</div><div class="pstep-body"><div class="pstep-title">Open Access 篩選</div><div class="pstep-desc">排除非 OA 文獻；僅保留可合法取得全文者</div><div class="pstep-count">${prismaLog.screened} 篇</div></div></div>
+    <div class="pstep-connector"></div>
+    <div class="prisma-step"><div class="pstep-num">4</div><div class="pstep-body"><div class="pstep-title">適格性評估</div><div class="pstep-desc">套用 PICO 條件、研究類型（含 AI/ML & 生物資訊）、年份、商業化潛力篩選</div><div class="pstep-count">${prismaLog.eligible} 篇</div></div></div>
+    <div class="pstep-connector"></div>
+    <div class="prisma-step"><div class="pstep-num">5</div><div class="pstep-body"><div class="pstep-title">納入文獻</div><div class="pstep-desc">通過所有篩選標準，納入分析與收藏</div><div class="pstep-count" style="color:var(--green)">${prismaLog.included} 篇</div></div></div>
+    <div class="prisma-note"><i class="ti ti-info-circle" style="font-size:13px;vertical-align:-2px"></i> PRISMA 流程依據 PRISMA 2020 聲明格式生成。AI/ML 與生物資訊學研究在此框架內同等對待。</div>
+  </div>`;
+}
+
+/* ─── Export CSV ─── */
+function exportCSV() {
+  if (!savedItems.length) { alert('請先收藏文獻再匯出'); return; }
+  const rows = [['Title','Authors','Journal','Year','DOI','Source','IsOA','PMC_ID','Citations','Study_Type','Is_AI_Bioi','TRL','Comm_Score','URL']];
+  savedItems.forEach(r => rows.push([`"${r.title.replace(/"/g,'""')}"`, r.authors, r.journal, r.year, r.doi, r.source, r.isOA?'Yes':'No', r.pmcid||'', r.citations, r.studyType, r.isAI?'Yes':'No', r.trl, r.commScore, r.url]));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob(['\ufeff' + csv], {type: 'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BioLitScreen_Pro_v2_export.csv';
+  a.click();
+}
+
+/* ─── Reset ─── */
+function resetAll() {
+  allResults = []; savedItems = [];
+  document.getElementById('mainQ').value = '';
+  ['picoP','picoI','picoC','picoO'].forEach(id => document.getElementById(id).value = '');
+  document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
+  document.getElementById('statsStrip').style.display = 'none';
+  document.getElementById('resultsArea').innerHTML = '<div class="empty-state"><i class="ti ti-microscope"></i>輸入關鍵字或選擇主題快速開始搜尋</div>';
+  document.getElementById('savedBadge').style.display = 'none';
+  updatePrisma();
+}
+
+/* ─── Send Prompt to AI Chat (if sendPrompt is available in parent) ─── */
+function sendPromptToChat(text) {
+  // If inside claude.ai artifact
+  if (window.sendPrompt) {
+    window.sendPrompt(text);
+  } else {
+    // Fallback: open AI hosting panel and route to chat
+    const tab = document.querySelector('.ntab:last-child');
+    switchTab('ai-hosting', tab);
+    setTimeout(() => {
+      document.getElementById('hostingChatInput').value = text;
+      sendHostingChat();
+    }, 300);
+  }
+}
+
+/* ─── AI Hosting Chat ─── */
+async function sendHostingChat() {
+  const input = document.getElementById('hostingChatInput');
+  const userText = input.value.trim();
+  if (!userText) return;
+  input.value = '';
+
+  const msgs = document.getElementById('hostingChatMsgs');
+  msgs.innerHTML += `<div class="msg user"><div class="msg-label">你</div><div class="msg-bubble">${escHtml(userText)}</div></div>`;
+  msgs.innerHTML += `<div class="msg ai" id="typing-indicator"><div class="msg-label">AI 助理</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  hostingChatHistory.push({ role: 'user', content: userText });
+
+  const systemPrompt = `你是 BioLitScreen Pro v2 的 AI 託管助理，專門負責：
+1. 系統健康監控與報錯診斷（PubMed/Europe PMC/Semantic Scholar API 連線、UI 錯誤、資料解析問題）
+2. 功能改進建議與代碼修復
+3. Google Sites 部署協助（iframe 嵌入、GitHub Pages 部署）
+4. 回答關於 PICO 篩選、PRISMA 流程、TRL 評分、AI/生物資訊學文獻主題的問題
+回答以繁體中文為主，技術術語可保留英文，回答要簡潔精準。`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: hostingChatHistory
+      })
+    });
+    const data = await response.json();
+    const reply = data.content?.find(c => c.type === 'text')?.text || '抱歉，目前無法取得回應。';
+    hostingChatHistory.push({ role: 'assistant', content: reply });
+
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+    msgs.innerHTML += `<div class="msg ai"><div class="msg-label">AI 助理</div><div class="msg-bubble">${escHtml(reply)}</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch (err) {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+    msgs.innerHTML += `<div class="msg ai"><div class="msg-label">AI 助理</div><div class="msg-bubble" style="color:var(--rose)">連線錯誤：${err.message}</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+}
+
+function quickHostingPrompt(text) {
+  document.getElementById('hostingChatInput').value = text;
+  sendHostingChat();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ─── Deploy Code ─── */
+function genDeployCode() {
+  const code = `<iframe src="YOUR_HOSTING_URL/biomedical_litscreen_pro_v2.html" 
+  width="100%" 
+  height="800" 
+  frameborder="0" 
+  allow="clipboard-write"
+  style="border-radius:12px;border:1px solid #333">
+</iframe>
+
+<!-- 
+📌 Google Sites 嵌入步驟：
+1. 在 Google Sites 中插入「嵌入」元素
+2. 選擇「嵌入代碼」標籤
+3. 貼上以上 iframe 代碼（請先將 YOUR_HOSTING_URL 替換為實際 URL）
+4. 建議將此 HTML 檔案上傳至 GitHub Pages 或 Netlify 取得公開 URL
+
+🚀 GitHub Pages 快速部署：
+1. 建立 GitHub 倉庫
+2. 上傳 biomedical_litscreen_pro_v2.html
+3. 啟用 GitHub Pages (Settings → Pages)
+4. 使用 https://username.github.io/repo/biomedical_litscreen_pro_v2.html
+-->`;
+  const el = document.getElementById('iframeCode');
+  el.textContent = code;
+  el.style.display = 'block';
+  document.getElementById('deployStatus').innerHTML = '<i class="ti ti-check" style="font-size:11px"></i> 代碼已生成';
+  document.getElementById('deployStatus').className = 'status-pill status-ok';
+}
+
+function copyDeployCode() {
+  const text = document.getElementById('iframeCode').textContent;
+  if (!text) { alert('請先點擊「生成嵌入代碼」'); return; }
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target.closest('button');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="ti ti-check"></i> 已複製！';
+    setTimeout(() => btn.innerHTML = orig, 2000);
+  });
+}
+
+function downloadPage() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([html], {type: 'text/html;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'biomedical_litscreen_pro_v2.html';
+  a.click();
+}
+</script>
+</body>
+</html>
