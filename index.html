@@ -20,75 +20,49 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--green)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
 .shell { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
-/* --- 搜尋區塊微調 --- */
-.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-
-/* 使用 wrap 並調整按鈕寬度，防止重疊 */
-.search-input-group { 
-  display: flex; 
-  gap: 12px; 
-  margin-bottom: 20px; 
-  flex-wrap: wrap; /* 寬度不足時自動換行 */
-}
-
-.input-wrapper { 
-  position: relative; 
-  flex: 1; 
-  min-width: 280px; /* 確保輸入框在換行前保有基本寬度 */
-}
+/* 搜尋區塊 */
+.search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.search-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+.input-wrapper { position: relative; flex: 1; }
 .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-.input-wrapper input { width: 100%; padding: 14px 14px 14px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; font-size: 14px; }
-.input-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-
-.btn-search { 
-  background: var(--accent); 
-  color: #fff; 
-  border: none; 
-  padding: 0 28px; 
-  height: 48px; /* 固定高度與輸入框對齊 */
-  border-radius: 8px; 
-  font-weight: 600; 
-  cursor: pointer; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  gap: 8px; 
-  transition: 0.2s; 
-  white-space: nowrap; /* 防止按鈕文字斷行 */
-}
-.btn-search:hover { background: #2563eb; transform: translateY(-1px); }
+.input-wrapper input { width: 100%; padding: 12px 14px 12px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; transition: 0.2s; }
+.input-wrapper input:focus { border-color: var(--accent); }
+.btn-search { background: var(--accent); color: #fff; border: none; padding: 0 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+.btn-search:hover { opacity: 0.9; transform: translateY(-1px); }
 
 /* PICO 區塊 */
-.pico-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.pico-item { background: var(--bg3); border: 1px solid var(--border); padding: 12px; border-radius: 8px; }
-.pico-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em; }
+.pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pico-item { background: var(--bg3); border: 1px solid var(--border); padding: 10px; border-radius: 8px; }
+.pico-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
 .pico-item input { width: 100%; background: transparent; border: none; color: var(--text); font-size: 13px; outline: none; }
 
-/* 結果卡片樣式保持不變... */
-.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 16px; position: relative; transition: 0.2s; border-left: 4px solid transparent; }
+/* 結果卡片 */
+.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 16px; position: relative; transition: 0.2s; }
 .lit-card:hover { border-color: rgba(255,255,255,0.15); }
-.source-tag { position: absolute; top: 24px; right: 24px; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
-.card-title { font-size: 17px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 10px; padding-right: 120px; line-height: 1.5; }
-.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 12px; }
-.card-tldr { font-size: 13px; color: var(--accent); background: rgba(59,130,246,0.06); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 14px; }
-.card-abstract { font-size: 13.5px; color: var(--text2); margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.source-tag { position: absolute; top: 20px; right: 20px; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
+.card-title { font-size: 16px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 8px; padding-right: 120px; line-height: 1.4; }
+.card-title:hover { color: var(--accent); }
+.card-meta { font-size: 12px; color: var(--text3); margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 10px; }
+.card-tldr { font-size: 13px; color: var(--accent); background: rgba(59,130,246,0.06); padding: 10px; border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 12px; }
+.card-abstract { font-size: 13px; color: var(--text2); margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-.tag-pubmed { background: rgba(59,130,246,0.1); color: var(--accent); border-left-color: var(--accent); }
-.tag-ss { background: rgba(139,92,246,0.1); color: var(--purple); border-left-color: var(--purple); }
-.tag-epmc { background: rgba(16,185,129,0.1); color: var(--green); border-left-color: var(--green); }
-.tag-crossref { background: rgba(6,182,212,0.1); color: var(--cyan); border-left-color: var(--cyan); }
+/* 資料庫顏色標籤 */
+.tag-pubmed { background: rgba(59,130,246,0.1); color: var(--accent); }
+.tag-ss { background: rgba(139,92,246,0.1); color: var(--purple); }
+.tag-epmc { background: rgba(16,185,129,0.1); color: var(--green); }
+.tag-crossref { background: rgba(6,182,212,0.1); color: var(--cyan); }
 
-.pdf-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; background: var(--green); color: #fff; transition: 0.2s; }
-.pdf-btn:hover { filter: brightness(1.1); }
+/* 下載按鈕 */
+.pdf-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; background: var(--green); color: #fff; }
 .pdf-btn.core { background: var(--amber); }
 
-.loading-box { text-align: center; padding: 80px; color: var(--accent); }
+.loading-box { text-align: center; padding: 60px; color: var(--accent); }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div class="logo-mark"><i class="ti ti-database-search"></i></div>
+  <div class="logo-mark"><i class="ti ti-database"></i></div>
   <div>
     <div style="font-size:15px; font-weight:600">BioLitScreen Pro</div>
     <div style="font-size:11px; color:var(--text3)">六合一實時文獻 & 全文檢索系統</div>
@@ -100,28 +74,27 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <div class="search-input-group">
       <div class="input-wrapper">
         <i class="ti ti-search"></i>
-        <input type="text" id="mainQ" placeholder="輸入搜尋課題 (例如: Acteoside A549)...">
+        <input type="text" id="mainQ" placeholder="輸入搜尋課題...">
       </div>
       <button class="btn-search" onclick="runUltraSearch()">
-        <i class="ti ti-bolt"></i> 檢索
+        <i class="ti ti-bolt"></i> 執行檢索
       </button>
     </div>
     <div class="pico-grid">
-      <div class="pico-item"><div class="pico-label">Population</div><input id="picoP" placeholder="目標細胞/群體"></div>
-      <div class="pico-item"><div class="pico-label">Intervention</div><input id="picoI" placeholder="處理措施/藥物"></div>
+      <div class="pico-item"><div class="pico-label">Population</div><input id="picoP" placeholder="目標群體"></div>
+      <div class="pico-item"><div class="pico-label">Intervention</div><input id="picoI" placeholder="干預措施"></div>
     </div>
   </div>
 
   <div id="resultsArea">
-    <div style="text-align:center; padding:100px 20px; color:var(--text3)">
-      <i class="ti ti-world-search" style="font-size:48px; margin-bottom:15px; display:block; opacity:0.5"></i>
-      <p>準備就緒。系統將同時從 PubMed, SS, PMC, Crossref 等資料庫抓取結果。</p>
+    <div style="text-align:center; padding:80px; color:var(--text3)">
+      <i class="ti ti-world-search" style="font-size:40px; margin-bottom:10px; display:block"></i>
+      <p>正在監聽 PubMed, Semantic Scholar, Europe PMC, Crossref...</p>
     </div>
   </div>
 </main>
 
 <script>
-// JavaScript 邏輯與之前版本相同...
 async function runUltraSearch() {
     const q = document.getElementById('mainQ').value;
     const p = document.getElementById('picoP').value;
@@ -130,7 +103,7 @@ async function runUltraSearch() {
 
     const fullQuery = `${q} ${p} ${i}`.trim();
     const area = document.getElementById('resultsArea');
-    area.innerHTML = '<div class="loading-box"><i class="ti ti-loader-2 ti-spin" style="font-size:32px"></i><p style="margin-top:15px; font-weight:500">正在同步調取全球資料庫...</p></div>';
+    area.innerHTML = '<div class="loading-box"><i class="ti ti-loader-2 ti-spin" style="font-size:24px"></i><p style="margin-top:10px">正在同步調取全球 6 個資料庫，請稍候...</p></div>';
 
     try {
         const [resPM, resSS, resEP, resCR] = await Promise.all([
@@ -143,10 +116,11 @@ async function runUltraSearch() {
         const combined = [...resSS, ...resEP, ...resCR, ...resPM];
         renderResults(combined);
     } catch (err) {
-        area.innerHTML = '<div class="loading-box">連線異常，請稍後再試。</div>';
+        area.innerHTML = '<div class="loading-box">請求超時，請檢查連線。</div>';
     }
 }
 
+// 1. PubMed
 async function fetchPubMed(q) {
     try {
         const r1 = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(q)}&retmode=json&retmax=4`).then(r=>r.json());
@@ -161,6 +135,7 @@ async function fetchPubMed(q) {
     } catch { return []; }
 }
 
+// 2. Semantic Scholar
 async function fetchSemanticScholar(q) {
     try {
         const r = await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(q)}&limit=4&fields=title,authors,year,url,tldr,abstract,externalIds`).then(r=>r.json());
@@ -172,6 +147,7 @@ async function fetchSemanticScholar(q) {
     } catch { return []; }
 }
 
+// 3. Europe PMC
 async function fetchEuropePMC(q) {
     try {
         const r = await fetch(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(q)}&format=json&pageSize=4`).then(r=>r.json());
@@ -183,6 +159,7 @@ async function fetchEuropePMC(q) {
     } catch { return []; }
 }
 
+// 4. Crossref (新增)
 async function fetchCrossref(q) {
     try {
         const r = await fetch(`https://api.crossref.org/works?query=${encodeURIComponent(q)}&rows=4`).then(r=>r.json());
@@ -195,6 +172,7 @@ async function fetchCrossref(q) {
     } catch { return []; }
 }
 
+// --- PDF 定位 (Unpaywall + CORE) ---
 async function findPDF(doi) {
     if (!doi) return null;
     try {
@@ -213,11 +191,11 @@ function renderResults(items) {
     
     items.forEach((item, idx) => {
         const card = document.createElement('div');
-        card.className = `lit-card ${item.tag}`;
+        card.className = 'lit-card';
         const docId = `pdf-${idx}`;
         
         card.innerHTML = `
-            <div class="source-tag">${item.source}</div>
+            <div class="source-tag ${item.tag}">${item.source}</div>
             <a href="${item.url}" target="_blank" class="card-title">${item.title}</a>
             <div class="card-meta">
                 <span><i class="ti ti-calendar"></i> ${item.date}</span>
