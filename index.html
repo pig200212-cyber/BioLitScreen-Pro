@@ -24,8 +24,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 .search-input-group { 
   display: flex; 
-  gap: 5px; 
-  margin-bottom: 10px; 
+  gap: 10px; 
+  margin-bottom: 15px; 
   flex-wrap: wrap; /* 關鍵：這行能讓按鈕在空間不足時自動跳到下一行 */
 }
 
@@ -88,7 +88,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <input type="text" id="mainQ" placeholder="輸入搜尋課題...">
       </div>
       <button class="btn-search" onclick="runUltraSearch()">
-        <i class="ti ti-bolt"></i> 執行檢索
+        <i class="ti ti-bolt"></i> 檢索
       </button>
     </div>
     <div class="pico-grid">
