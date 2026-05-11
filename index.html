@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>BioLitScreen Pro v5.5 - Ultimate Research Suite</title>
+<title>BioLitScreen Pro v6.0 | 旗艦文獻檢索系統</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
 <style>
@@ -14,39 +14,35 @@
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.5; }
 .shell { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
 
-/* 頂部搜尋卡片 */
+/* 搜尋區塊修復 */
 .search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 30px; margin-bottom: 30px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
 .input-row { display: flex; gap: 12px; margin-bottom: 20px; }
 .input-wrapper { position: relative; flex: 1; }
 .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-.input-wrapper input { width: 100%; height: 52px; padding-left: 48px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-size: 16px; transition: 0.2s; box-sizing: border-box; }
-.input-wrapper input:focus { border-color: var(--accent); background: #1e293b; outline: none; }
+.input-wrapper input { width: 100%; height: 52px; padding-left: 48px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-size: 16px; outline: none; box-sizing: border-box; }
+.input-wrapper input:focus { border-color: var(--accent); }
 
-.btn-primary { background: var(--accent); color: white; border: none; padding: 0 30px; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 15px; }
-.btn-primary:hover { filter: brightness(1.1); }
+.btn-primary { background: var(--accent); color: white; border: none; padding: 0 30px; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 15px; flex-shrink: 0; }
+.filter-bar { display: flex; gap: 12px; align-items: center; }
+.filter-box { background: var(--bg3); border: 1px solid var(--border); padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+.filter-box label { font-size: 10px; font-weight: 800; color: var(--text3); text-transform: uppercase; }
+.filter-box input { background: transparent; border: none; color: var(--accent); font-weight: 700; width: 50px; outline: none; }
+.btn-key { background: #334155; color: #cbd5e1; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
-.filter-bar { display: flex; gap: 15px; align-items: center; }
-.filter-box { background: var(--bg3); border: 1px solid var(--border); padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; flex: 1; }
-.filter-box label { font-size: 11px; font-weight: 800; color: var(--text3); text-transform: uppercase; }
-.filter-box input { background: transparent; border: none; color: var(--accent); font-weight: 700; width: 60px; outline: none; font-size: 15px; }
-.btn-key { background: #334155; color: #cbd5e1; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+/* 卡片與按鈕 */
+.lit-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 25px; margin-bottom: 20px; position: relative; border-left: 4px solid transparent; }
+.lit-item:hover { border-left-color: var(--accent); background: #161e2e; }
+.source-tag { position: absolute; top: 25px; right: 25px; font-size: 10px; color: var(--text3); background: var(--bg3); padding: 2px 8px; border-radius: 4px; }
+.title { font-size: 18px; font-weight: 700; color: #fff; text-decoration: none; display: block; margin-bottom: 12px; padding-right: 80px; }
+.meta { display: flex; gap: 15px; font-size: 13px; color: var(--text3); margin-bottom: 15px; }
+.year { color: var(--amber); font-weight: 800; }
 
-/* 文獻卡片 */
-.lit-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 25px; margin-bottom: 20px; position: relative; transition: 0.3s; }
-.lit-item:hover { transform: translateY(-3px); border-color: rgba(59,130,246,0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-.badge { position: absolute; top: 25px; right: 25px; font-size: 10px; font-weight: 900; color: var(--text3); opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
-.title { font-size: 19px; font-weight: 700; color: #fff; text-decoration: none; margin-bottom: 12px; display: block; line-height: 1.4; padding-right: 100px; }
-.meta { display: flex; gap: 15px; font-size: 13px; color: var(--text3); margin-bottom: 20px; align-items: center; }
-.year { color: var(--amber); font-weight: 800; background: rgba(245,158,11,0.1); padding: 2px 8px; border-radius: 4px; }
+.action-row { display: flex; gap: 10px; }
+.btn-ui { height: 36px; padding: 0 15px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; border: none; color: white; }
+.btn-pdf { background: var(--green); }
+.btn-ai { background: var(--purple); }
 
-.action-row { display: flex; gap: 12px; margin-top: 15px; }
-.btn-action { height: 36px; padding: 0 16px; border-radius: 6px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; border: none; transition: 0.2s; }
-.btn-pdf { background: var(--green); color: white; }
-.btn-ai { background: var(--purple); color: white; }
-.btn-ai:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.ai-output { margin-top: 20px; padding: 20px; background: rgba(168, 85, 247, 0.05); border-radius: 10px; border: 1px dashed var(--purple); display: none; font-size: 14px; color: #cbd5e1; line-height: 1.8; animation: fadeIn 0.4s; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.ai-box { margin-top: 20px; padding: 20px; background: rgba(168, 85, 247, 0.05); border: 1px dashed var(--purple); border-radius: 10px; display: none; font-size: 14px; line-height: 1.8; color: #d1d5db; }
 </style>
 </head>
 <body>
@@ -56,126 +52,162 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <div class="input-row">
       <div class="input-wrapper">
         <i class="ti ti-search"></i>
-        <input type="text" id="q" placeholder="輸入研究關鍵字 (例如: Acteoside cancer)...">
+        <input type="text" id="q" placeholder="例如: Acteoside cancer A549...">
       </div>
-      <button class="btn-primary" onclick="runSearch()"><i class="ti ti-rotate-dot"></i> 全庫檢索</button>
+      <button class="btn-primary" onclick="search()"><i class="ti ti-bolt"></i> 執行檢索</button>
     </div>
     <div class="filter-bar">
       <div class="filter-box"><label>From</label><input type="number" id="sy" value="2018"></div>
       <div class="filter-box"><label>To</label><input type="number" id="ey" value="2026"></div>
-      <button class="btn-key" onclick="saveKey()"><i class="ti ti-key"></i> 設定 API Key</button>
+      <button class="btn-key" onclick="setKey()"><i class="ti ti-key"></i> 設定 API Key</button>
     </div>
   </div>
-  <div id="info" style="margin-bottom:15px; font-size:13px; color:var(--text3)"></div>
-  <div id="res"></div>
+  <div id="status" style="font-size:13px; color:var(--text3); margin-bottom:15px"></div>
+  <div id="results"></div>
 </div>
 
 <script>
-let apiKey = localStorage.getItem('gemini_key') || "";
+let currentKey = localStorage.getItem('gemini_v6_key') || "";
 
-function saveKey() {
-    const k = prompt("請貼上您的 Gemini API Key：", apiKey);
-    if(k) { apiKey = k; localStorage.setItem('gemini_key', k); alert("Key 已儲存！"); }
+function setKey() {
+    const k = prompt("請輸入 Gemini API Key：", currentKey);
+    if(k) { currentKey = k; localStorage.setItem('gemini_v6_key', k); alert("Key 已儲存！"); }
 }
 
-async function runSearch() {
+async function search() {
     const query = document.getElementById('q').value;
+    const sy = document.getElementById('sy').value;
+    const ey = document.getElementById('ey').value;
     if(!query) return;
-    const sy = parseInt(document.getElementById('sy').value);
-    const ey = parseInt(document.getElementById('ey').value);
-    
-    const container = document.getElementById('res');
-    const info = document.getElementById('info');
-    container.innerHTML = '';
-    info.innerHTML = `<i class="ti ti-loader-2 ti-spin"></i> 正在連線至 PubMed, Crossref, Europe PMC, Semantic Scholar...`;
 
-    try {
-        const tasks = [fetchPM(query), fetchSS(query), fetchCR(query), fetchEP(query)];
-        const results = await Promise.allSettled(tasks);
-        let all = [];
-        results.forEach(r => { if(r.status === 'fulfilled') all = [...all, ...r.value]; });
+    const resArea = document.getElementById('results');
+    const status = document.getElementById('status');
+    resArea.innerHTML = '';
+    status.innerHTML = `<i class="ti ti-loader-2 ti-spin"></i> 正在請求 API 端過濾 ${sy}-${ey} 年份數據...`;
 
-        let filtered = all.filter(i => i.year >= sy && i.year <= ey);
-        const unique = Array.from(new Map(filtered.map(i => [i.doi || i.title.toLowerCase(), i])).values());
-        unique.sort((a,b) => b.year - a.year);
+    // 核心改進：年份過濾推送到 API 請求中
+    const tasks = [
+        fetchPM(query, sy, ey),
+        fetchSS(query),
+        fetchEP(query, sy, ey),
+        fetchCR(query)
+    ];
 
-        info.innerHTML = `共找到 ${unique.length} 篇符合條件的文獻 (範圍: ${sy}-${ey})`;
-        render(unique);
-    } catch(e) { info.innerHTML = "搜尋失敗，請檢查網路。"; }
+    const allResults = await Promise.allSettled(tasks);
+    let combined = [];
+    allResults.forEach(r => { if(r.status==='fulfilled') combined = [...combined, ...r.value]; });
+
+    // 二次本地精確篩選
+    const final = combined.filter(i => i.year >= sy && i.year <= ey);
+    const unique = Array.from(new Map(final.map(i => [i.doi || i.title.toLowerCase(), i])).values());
+    unique.sort((a,b) => b.year - a.year);
+
+    status.innerHTML = `共找到 ${unique.length} 篇符合條件的文獻`;
+    render(unique);
 }
 
-// 各 API 抓取邏輯 (針對 Crossref 與 Europe PMC 優化摘要抓取)
-async function fetchPM(q){ try{ const r=await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${q}&retmode=json&retmax=15`).then(res=>res.json()); const ids=r.esearchresult.idlist; if(!ids.length)return []; const d=await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(res=>res.json()); return ids.map(id=>({ title:d.result[id].title, year:parseInt(d.result[id].pubdate), author:d.result[id].authors?.[0]?.name, doi:d.result[id].elocationid?.replace('doi: ',''), url:`https://pubmed.ncbi.nlm.nih.gov/${id}/`, src:'PubMed' })); }catch{return []}}
-async function fetchSS(q){ try{ const r=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&limit=15&fields=title,authors,year,url,externalIds,openAccessPdf,abstract`).then(res=>res.json()); return r.data.map(i=>({ title:i.title, year:i.year, author:i.authors?.[0]?.name, doi:i.externalIds?.DOI, url:i.url, src:'Semantic Scholar', pdf:i.openAccessPdf?.url, abstract:i.abstract })); }catch{return []}}
-async function fetchCR(q){ try{ const r=await fetch(`https://api.crossref.org/works?query=${query}&rows=15`).then(res=>res.json()); return r.message.items.map(i=>({ title:i.title[0], year:i.created['date-parts'][0][0], author:i.author?.[0]?.family, doi:i.DOI, url:i.URL, src:'Crossref', abstract: i.abstract })); }catch{return []}}
-async function fetchEP(q){ try{ const r=await fetch(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${q}&format=json&pageSize=15`).then(res=>res.json()); return r.resultList.result.map(i=>({ title:i.title, year:parseInt(i.pubYear), author:i.authorString?.split(',')[0], doi:i.doi, url:`https://europepmc.org/article/MED/${i.id}`, src:'Europe PMC' })); }catch{return []}}
+// 修復各平台的年份抓取與 DOI 格式
+async function fetchPM(q, s, e){
+    try{
+        const url = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${q}+AND+(${s}[PDAT]:${e}[PDAT])&retmode=json&retmax=20`;
+        const r = await fetch(url).then(res=>res.json());
+        const ids = r.esearchresult.idlist;
+        if(!ids.length) return [];
+        const d = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(res=>res.json());
+        return ids.map(id => ({
+            title: d.result[id].title,
+            year: parseInt(d.result[id].pubdate.match(/\d{4}/)?.[0] || 0),
+            author: d.result[id].authors?.[0]?.name,
+            doi: d.result[id].elocationid?.replace('doi: ', ''),
+            url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+            src: 'PubMed'
+        }));
+    }catch{return []}
+}
 
-async function askAI(title, abstract, btn, targetId) {
-    if(!apiKey) { alert("請先設定 API Key"); return; }
-    const box = document.getElementById(targetId);
+async function fetchEP(q, s, e){
+    try{
+        const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${q}%20AND%20(FIRST_PDATE:[${s}%20TO%20${e}])&format=json&pageSize=20`;
+        const r = await fetch(url).then(res=>res.json());
+        return r.resultList.result.map(i => ({
+            title: i.title,
+            year: parseInt(i.pubYear),
+            author: i.authorString?.split(',')[0],
+            doi: i.doi,
+            url: `https://europepmc.org/article/MED/${i.id}`,
+            src: 'Europe PMC'
+        }));
+    }catch{return []}
+}
+
+async function fetchSS(q){ try{ const r=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&limit=20&fields=title,authors,year,url,externalIds,openAccessPdf,abstract`).then(res=>res.json()); return r.data.map(i=>({ title:i.title, year:i.year, author:i.authors?.[0]?.name, doi:i.externalIds?.DOI, url:i.url, src:'SemanticScholar', pdf:i.openAccessPdf?.url, abstract:i.abstract })); }catch{return []}}
+async function fetchCR(q){ try{ const r=await fetch(`https://api.crossref.org/works?query=${q}&rows=20`).then(res=>res.json()); return r.message.items.map(i=>({ title:i.title[0], year:i.created['date-parts'][0][0], author:i.author?.[0]?.family, doi:i.DOI, url:i.URL, src:'Crossref' })); }catch{return []}}
+
+async function askAI(title, abstract, btn, boxId) {
+    if(!currentKey) { alert("請先設定 API Key"); return; }
+    const box = document.getElementById(boxId);
     box.style.display = 'block';
-    box.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> AI 正在深入閱讀文獻細節...';
+    box.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> AI 正在分析...';
     btn.disabled = true;
 
-    // 解決摘要為空或包含 HTML 標籤的問題
-    const cleanAbstract = (abstract || "無提供摘要內容").replace(/<[^>]*>/g, '');
-    const prompt = `你是一位資深生物醫學研究員。請針對此論文進行：
-    1. 將標題與摘要精準翻譯為繁體中文。
-    2. 總結三個研究亮點或實驗結論。
-    標題：${title}
-    摘要：${cleanAbstract}`;
+    // 修復：徹底清洗引號與特殊符號
+    const cleanTitle = title.replace(/["'`]/g, '');
+    const cleanAbs = (abstract || "此文獻未提供摘要，請根據標題進行推論。").replace(/["'`]/g, '').substring(0, 2000);
 
     try {
-        const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${currentKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: `你是一位資深生醫科學家。請翻譯標題並給出三個繁體中文要點。標題：${cleanTitle}。摘要內容：${cleanAbs}` }]
+                }]
+            })
         });
         const data = await resp.json();
-        const text = data.candidates[0].content.parts[0].text;
-        box.innerHTML = `<strong><i class="ti ti-sparkles"></i> AI 閱讀筆記：</strong><br>${text.replace(/\n/g, '<br>')}`;
+        const output = data.candidates[0].content.parts[0].text;
+        box.innerHTML = `<strong><i class="ti ti-sparkles"></i> AI 研讀結論：</strong><br>${output.replace(/\n/g, '<br>')}`;
     } catch(e) {
-        box.innerHTML = `<span style="color:#ef4444">❌ AI 暫時無法分析。可能原因：API Key 無效或請求過快。</span>`;
+        box.innerHTML = `<span style="color:#ef4444">❌ AI 連線失敗：請檢查 API Key 或網路環境。</span>`;
     } finally { btn.disabled = false; }
 }
 
-async function getPDF(doi, targetId) {
+async function fetchPDF(doi, elId) {
     if(!doi) return;
     try {
-        const r = await fetch(`https://api.unpaywall.org/v2/${doi}?email=un@example.com`).then(res=>res.json());
-        if(r.is_oa) {
-            const url = r.best_oa_location.url_for_pdf || r.best_oa_location.url;
-            document.getElementById(targetId).innerHTML = `<a href="${url}" target="_blank" class="btn-action btn-pdf"><i class="ti ti-file-download"></i> PDF 全文</a>`;
+        const res = await fetch(`https://api.unpaywall.org/v2/${doi}?email=un@example.com`).then(r=>r.json());
+        if(res.is_oa) {
+            const url = res.best_oa_location.url_for_pdf || res.best_oa_location.url;
+            document.getElementById(elId).innerHTML = `<a href="${url}" target="_blank" class="btn-ui btn-pdf"><i class="ti ti-file-download"></i> PDF 全文</a>`;
         }
     } catch(e){}
 }
 
-function render(data) {
-    const res = document.getElementById('res');
-    data.forEach((i, idx) => {
-        const pdfId = `p-${idx}`;
-        const aiId = `a-${idx}`;
+function render(items) {
+    const area = document.getElementById('results');
+    items.forEach((item, idx) => {
+        const pId = `pdf-${idx}`;
+        const aId = `ai-${idx}`;
         const card = document.createElement('div');
         card.className = 'lit-item';
         card.innerHTML = `
-            <div class="badge">${i.src}</div>
-            <a href="${i.url}" target="_blank" class="title">${i.title}</a>
+            <div class="source-tag">${item.src}</div>
+            <a href="${item.url}" target="_blank" class="title">${item.title}</a>
             <div class="meta">
-                <span class="year">${i.year} 年</span>
-                <span><i class="ti ti-user-edit"></i> ${i.author || 'N/A'} et al.</span>
-                <span style="opacity:0.6">DOI: ${i.doi || 'N/A'}</span>
+                <span class="year">${item.year} 年</span>
+                <span>${item.author || '未知作者'} et al.</span>
             </div>
             <div class="action-row">
-                <div id="${pdfId}"></div>
-                <button class="btn-action btn-ai" onclick="askAI(\`${i.title.replace(/'|`/g, "")}\`, \`${(i.abstract || "").replace(/'|`/g, "")}\`, this, '${aiId}')">
-                    <i class="ti ti-sparkles"></i> AI 摘要總結
+                <div id="${pId}"></div>
+                <button class="btn-ui btn-ai" onclick="askAI(\`${item.title.replace(/'|`/g, "")}\`, \`${(item.abstract || "").replace(/'|`/g, "")}\`, this, '${aId}')">
+                    <i class="ti ti-sparkles"></i> AI 總結
                 </button>
             </div>
-            <div id="${aiId}" class="ai-output"></div>
+            <div id="${aId}" class="ai-box"></div>
         `;
-        res.appendChild(card);
-        if(i.pdf) document.getElementById(pdfId).innerHTML = `<a href="${i.pdf}" target="_blank" class="btn-action btn-pdf"><i class="ti ti-file-download"></i> PDF 下載</a>`;
-        else if(i.doi) getPDF(i.doi, pdfId);
+        area.appendChild(card);
+        if(item.pdf) document.getElementById(pId).innerHTML = `<a href="${item.pdf}" target="_blank" class="btn-ui btn-pdf"><i class="ti ti-file-download"></i> PDF 下載</a>`;
+        else if(item.doi) fetchPDF(item.doi, pId);
     });
 }
 </script>
