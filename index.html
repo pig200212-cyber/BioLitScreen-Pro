@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BioLitScreen Pro v3.8</title>
+<title>BioLitScreen Pro v3.9</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,74 +12,48 @@
 :root {
   --bg: #0b0f1a; --bg2: #111827; --bg3: #1a2236;
   --border: rgba(255,255,255,0.07); --text: #e8edf5; --text2: #8b97b0; --text3: #5c6b82;
-  --accent: #3b82f6; --green: #10b981; --amber: #f59e0b;
-  --r: 12px;
+  --accent: #3b82f6; --green: #10b981; --amber: #f59e0b; --r: 12px;
 }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 100px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 100px; line-height: 1.6; }
 .shell { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
 
-/* --- 修正後的搜尋區塊 --- */
+/* 搜尋區塊修復 - 解決塗層重疊 */
 .search-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-
-.search-input-group { 
-  display: flex; 
-  gap: 12px; 
-  margin-bottom: 16px; 
-  align-items: center; 
-  flex-wrap: nowrap; /* 強制不換行，避免按鈕跑掉 */
-}
-
-.input-wrapper { 
-  position: relative; 
-  flex-grow: 1; /* 讓輸入框佔據剩餘空間 */
-  min-width: 0; /* 防止 flex 項目溢出 */
-}
-
-.input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); z-index: 2; }
-
-.input-wrapper input { 
-  width: 100%; 
-  padding: 14px 14px 14px 42px; 
-  background: var(--bg3); 
-  border: 1px solid var(--border); 
-  border-radius: 8px; 
-  color: var(--text); 
-  outline: none; 
-  font-size: 15px;
-  box-sizing: border-box;
-}
+.search-input-group { display: flex; gap: 12px; margin-bottom: 16px; align-items: stretch; flex-wrap: nowrap; }
+.input-wrapper { position: relative; flex: 1; min-width: 0; }
+.input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); z-index: 5; }
+.input-wrapper input { width: 100%; padding: 14px 14px 14px 42px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none; box-sizing: border-box; height: 50px; font-size: 15px; }
 
 .btn-search { 
-  background: var(--accent); 
-  color: #fff; 
-  border: none; 
-  padding: 0 24px; 
-  height: 48px; 
-  border-radius: 8px; 
-  font-weight: 600; 
-  cursor: pointer; 
-  white-space: nowrap; /* 確保「執行檢索」文字不換行 */
-  flex-shrink: 0; /* 防止按鈕被壓縮 */
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  background: var(--accent); color: #fff; border: none; padding: 0 28px; height: 50px; border-radius: 8px; font-weight: 600; cursor: pointer; 
+  display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; transition: 0.2s; flex-shrink: 0;
 }
+.btn-search:hover { background: #2563eb; transform: translateY(-1px); }
 
+/* 年份篩選 */
 .filter-row { display: flex; gap: 12px; }
-.filter-item { flex: 1; background: var(--bg3); border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+.filter-item { flex: 1; background: var(--bg3); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
 .filter-item label { font-size: 11px; color: var(--text3); font-weight: 800; text-transform: uppercase; }
-.filter-item input { background: transparent; border: none; color: var(--accent); font-weight: 600; width: 100%; outline: none; }
+.filter-item input { background: transparent; border: none; color: var(--accent); font-weight: 600; outline: none; width: 100%; }
 
 /* 文獻卡片與 PDF 標籤 */
-.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 16px; display: flex; gap: 16px; position: relative; border-left: 4px solid var(--text3); }
+.lit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 16px; display: flex; gap: 16px; position: relative; border-left: 4px solid var(--text3); transition: 0.3s; }
+.lit-card:hover { border-left-color: var(--accent); background: #161e2e; }
 .content-area { flex: 1; }
-.card-title { font-size: 17px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 10px; line-height: 1.4; padding-right: 100px; }
-.card-meta { font-size: 13px; color: var(--text3); display: flex; gap: 15px; margin-bottom: 12px; }
+.card-title { font-size: 17px; font-weight: 600; color: var(--text); text-decoration: none; display: block; margin-bottom: 8px; line-height: 1.4; padding-right: 80px; }
+.card-meta { font-size: 13px; color: var(--text3); display: flex; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; }
 .year-tag { color: var(--amber); font-weight: 700; }
-.pdf-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: #fff; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; text-decoration: none; margin-top: 10px; }
-.source-tag { position: absolute; top: 24px; right: 24px; font-size: 10px; font-weight: 800; opacity: 0.5; }
 
-/* 勾選列 */
+.pdf-badge { 
+  display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: #fff; 
+  padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; text-decoration: none; margin-top: 10px;
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.source-tag { position: absolute; top: 24px; right: 24px; font-size: 10px; font-weight: 800; padding: 4px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; }
+
+/* 底部功能列 */
 .cart-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 24px; border-radius: 40px; display: none; align-items: center; gap: 20px; box-shadow: 0 10px 30px rgba(59,130,246,0.4); z-index: 1000; }
 </style>
 </head>
@@ -90,7 +64,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
     <div class="search-input-group">
       <div class="input-wrapper">
         <i class="ti ti-search"></i>
-        <input type="text" id="mainQ" placeholder="搜尋研究關鍵字...">
+        <input type="text" id="mainQ" placeholder="搜尋研究關鍵字 (如: cck8, A549)...">
       </div>
       <button class="btn-search" onclick="runSearch()"><i class="ti ti-bolt"></i> 執行檢索</button>
     </div>
@@ -104,7 +78,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
 <div id="cartBar" class="cart-bar">
   <span id="cartCount">已選取 0 篇</span>
-  <button onclick="alert('APA 生成功能已準備就緒')" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:6px 12px; border-radius:15px; cursor:pointer;">生成引用</button>
+  <button onclick="generateAPA()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:8px 16px; border-radius:20px; cursor:pointer; font-weight:600;">生成引用</button>
 </div>
 
 <script>
@@ -117,46 +91,48 @@ async function runSearch() {
     if(!q) return;
 
     const area = document.getElementById('resultsArea');
-    area.innerHTML = '<div style="text-align:center; padding:50px"><i class="ti ti-loader-2 ti-spin" style="font-size:32px; color:var(--accent)"></i></div>';
+    area.innerHTML = '<div style="text-align:center; padding:100px"><i class="ti ti-loader-2 ti-spin" style="font-size:32px; color:var(--accent)"></i><p style="margin-top:15px; color:var(--text2)">正在同步跨庫檢索並比對 PDF 路徑...</p></div>';
 
     try {
         const [rPM, rSS] = await Promise.all([fetchPM(q), fetchSS(q)]);
         let all = [...rPM, ...rSS];
         
-        // --- 核心修正：年份篩選邏輯 ---
-        // 確保排除 NaN 的年份，並嚴格執行閉區間 [sYear, eYear] 篩選
+        // --- 年份篩選修復邏輯 ---
         let filtered = all.filter(item => {
             const y = parseInt(item.year);
             return !isNaN(y) && y >= sYear && y <= eYear;
         });
 
-        // 按年份降序排序（最新在前）
+        // 排序：最新在前
         filtered.sort((a, b) => b.year - a.year);
-
         render(filtered);
-    } catch(e) { area.innerHTML = "檢索失敗，請檢查網路連線。"; }
+    } catch(e) { area.innerHTML = "檢索失敗。"; }
 }
 
-async function fetchPM(q){ try{ const r=await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${q}&retmode=json&retmax=10`).then(res=>res.json()); const ids=r.esearchresult.idlist; if(!ids.length)return []; const d=await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(res=>res.json()); return ids.map(id=>({ title: d.result[id].title, year: parseInt(d.result[id].pubdate), author: d.result[id].authors?.[0]?.name, journal: d.result[id].fulljournalname, doi: d.result[id].elocationid?.replace('doi: ',''), url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`, src:'PubMed'})); }catch{return []}}
-async function fetchSS(q){ try{ const r=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&limit=10&fields=title,authors,year,url,externalIds,venue`).then(res=>res.json()); return r.data.map(i=>({ title: i.title, year: i.year, author: i.authors?.[0]?.name, journal: i.venue, doi: i.externalIds?.DOI, url: i.url, src:'SemanticScholar'})); }catch{return []}}
+async function fetchPM(q){ try{ const r=await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${q}&retmode=json&retmax=8`).then(res=>res.json()); const ids=r.esearchresult.idlist; if(!ids.length)return []; const d=await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(res=>res.json()); return ids.map(id=>({ title: d.result[id].title, year: parseInt(d.result[id].pubdate), author: d.result[id].authors?.[0]?.name, journal: d.result[id].fulljournalname, doi: d.result[id].elocationid?.replace('doi: ',''), url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`, src:'PubMed'})); }catch{return []}}
+async function fetchSS(q){ try{ const r=await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&limit=8&fields=title,authors,year,url,externalIds,venue`).then(res=>res.json()); return r.data.map(i=>({ title: i.title, year: i.year, author: i.authors?.[0]?.name, journal: i.venue, doi: i.externalIds?.DOI, url: i.url, src:'SemanticScholar'})); }catch{return []}}
 
-async function checkPDF(doi, targetId) {
+// 核心 PDF 偵測回歸函數
+async function checkPDFStatus(doi, containerId) {
     if(!doi) return;
     try {
         const res = await fetch(`https://api.unpaywall.org/v2/${doi}?email=un@example.com`).then(r=>r.json());
         if(res.is_oa) {
             const link = res.best_oa_location.url_for_pdf || res.best_oa_location.url;
-            document.getElementById(targetId).innerHTML += `<a href="${link}" target="_blank" class="pdf-badge"><i class="ti ti-file-download"></i> PDF 檔可下載</a>`;
+            const target = document.getElementById(containerId);
+            if(target) {
+                target.innerHTML = `<a href="${link}" target="_blank" class="pdf-badge"><i class="ti ti-file-download"></i> PDF 檔可下載 (Open Access)</a>`;
+            }
         }
     } catch(e){}
 }
 
 function render(items) {
     const area = document.getElementById('resultsArea');
-    area.innerHTML = items.length ? '' : '<div style="text-align:center; padding:50px; color:var(--text3)">找不到符合年份條件的文獻。</div>';
+    area.innerHTML = items.length ? '' : '<div style="text-align:center; padding:50px; color:var(--text3)">此條件下無文獻結果。</div>';
     
     items.forEach((item, idx) => {
-        const pdfId = `pdf-${idx}`;
+        const pdfBoxId = `pdf-container-${idx}`;
         const card = document.createElement('div');
         card.className = 'lit-card';
         card.innerHTML = `
@@ -165,15 +141,16 @@ function render(items) {
                 <div class="source-tag">${item.src}</div>
                 <a href="${item.url}" target="_blank" class="card-title">${item.title}</a>
                 <div class="card-meta">
-                    <span class="year-tag">${item.year}</span>
+                    <span class="year-tag">${item.year} 年</span>
                     <span>${item.author || 'N/A'} et al.</span>
-                    <span style="opacity:0.5">${item.journal || ''}</span>
+                    <span style="opacity:0.6">${item.journal || ''}</span>
                 </div>
-                <div id="${pdfId}"></div>
-            </div>
+                <div id="${pdfBoxId}"></div> </div>
         `;
         area.appendChild(card);
-        if(item.doi) checkPDF(item.doi, pdfId);
+        
+        // 渲染後立即異步檢查 PDF
+        if(item.doi) checkPDFStatus(item.doi, pdfBoxId);
     });
 }
 
@@ -183,6 +160,14 @@ function toggleCart(item, isAdd) {
     const bar = document.getElementById('cartBar');
     document.getElementById('cartCount').innerText = `已選取 ${selected.length} 篇`;
     bar.style.display = selected.length > 0 ? 'flex' : 'none';
+}
+
+function generateAPA() {
+    let text = "APA 引用結果：\n\n";
+    selected.forEach(p => {
+        text += `${p.author} (${p.year}). ${p.title}. ${p.journal || 'Journal'}. https://doi.org/${p.doi || ''}\n\n`;
+    });
+    alert(text);
 }
 </script>
 </body>
