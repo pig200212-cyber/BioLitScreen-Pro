@@ -2,27 +2,47 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>BioLitScreen Pro v7.1 | 出版商擴充版</title>
+<title>BioLitScreen Pro v7.0 | 專業文獻檢索系統</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
 <style>
-/* 延用 v7.0 樣式，僅微調 */
-:root { --bg: #0f172a; --bg-card: #1e293b; --bg-input: #334155; --text: #f1f5f9; --text-dim: #94a3b8; --accent: #38bdf8; --green: #22c55e; --amber: #f59e0b; --border: rgba(255,255,255,0.1); --r: 12px; }
+:root {
+  --bg: #0f172a; --bg-card: #1e293b; --bg-input: #334155;
+  --text: #f1f5f9; --text-dim: #94a3b8; --accent: #38bdf8;
+  --green: #22c55e; --amber: #f59e0b; --border: rgba(255,255,255,0.1); --r: 12px;
+}
 body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
 .shell { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+/* 搜尋區塊 */
 .search-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 25px; margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 .input-row { display: flex; gap: 10px; margin-bottom: 20px; }
 .input-group { position: relative; flex: 1; }
 .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-dim); }
-.input-group input { width: 100%; height: 48px; padding-left: 44px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 15px; outline: none; box-sizing: border-box; }
-.btn-search { background: var(--accent); color: #000; border: none; padding: 0 25px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-.filter-row { display: flex; gap: 15px; align-items: center; border-top: 1px solid var(--border); padding-top: 15px; }
+.input-group input { width: 100%; height: 48px; padding-left: 44px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 15px; outline: none; box-sizing: border-box; transition: 0.2s; }
+.input-group input:focus { border-color: var(--accent); background: #1e293b; }
+
+.btn-search { background: var(--accent); color: #000; border: none; padding: 0 25px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.btn-search:hover { filter: brightness(1.1); }
+
+.filter-row { display: flex; gap: 15px; align-items: center; border-top: 1px solid var(--border); pt: 15px; margin-top: 15px; padding-top: 15px; }
+.filter-item { display: flex; align-items: center; gap: 8px; }
+.filter-item label { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; }
 .filter-item input { background: var(--bg-input); border: 1px solid var(--border); border-radius: 4px; color: var(--accent); font-weight: 700; width: 65px; padding: 4px 8px; outline: none; }
-.lit-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 16px; position: relative; }
+
+/* 文獻清單 */
+.lit-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 16px; position: relative; transition: 0.2s; }
+.lit-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .tag { position: absolute; top: 20px; right: 20px; font-size: 10px; background: rgba(56,189,248,0.1); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-weight: 700; }
-.title { font-size: 17px; font-weight: 700; color: #fff; text-decoration: none; display: block; margin-bottom: 10px; padding-right: 120px; }
-.btn-pdf { background: var(--green); color: white; height: 34px; padding: 0 15px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-.api-tip { font-size: 11px; color: var(--amber); margin-top: 5px; cursor: pointer; }
+.title { font-size: 17px; font-weight: 700; color: #fff; text-decoration: none; display: block; margin-bottom: 10px; padding-right: 80px; line-height: 1.4; }
+.title:hover { color: var(--accent); }
+.meta { font-size: 13px; color: var(--text-dim); margin-bottom: 15px; display: flex; gap: 12px; align-items: center; }
+.year { color: var(--amber); font-weight: 700; }
+
+.pdf-container { display: flex; min-height: 36px; align-items: center; }
+.btn-pdf { background: var(--green); color: white; height: 34px; padding: 0 15px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+.btn-pdf:hover { transform: scale(1.05); filter: brightness(1.1); }
+.no-pdf { font-size: 12px; color: var(--text-dim); opacity: 0.6; font-style: italic; }
 </style>
 </head>
 <body>
@@ -32,9 +52,9 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
     <div class="input-row">
       <div class="input-group">
         <i class="ti ti-search"></i>
-        <input type="text" id="q" placeholder="輸入搜尋詞 (如: A549 cell apoptosis)...">
+        <input type="text" id="q" placeholder="輸入搜尋詞 (如: Acteoside HepG2)...">
       </div>
-      <button class="btn-search" onclick="doSearch()"><i class="ti ti-database-search"></i> 全平台檢索</button>
+      <button class="btn-search" onclick="doSearch()"><i class="ti ti-database-search"></i> 搜尋文獻</button>
     </div>
     <div class="filter-row">
       <div class="filter-item"><label>From</label><input type="number" id="sy" value="2018"></div>
@@ -42,21 +62,11 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
       <div style="flex:1"></div>
       <span id="stat" style="font-size:12px; color:var(--text-dim)"></span>
     </div>
-    <div class="api-tip" onclick="manageKeys()"><i class="ti ti-settings"></i> 設定 ScienceDirect / Nature API Key (非必要)</div>
   </div>
   <div id="res"></div>
 </div>
 
 <script>
-// 儲存 API Keys
-let keys = JSON.parse(localStorage.getItem('biolit_keys') || '{"sd":"","nt":""}');
-
-function manageKeys() {
-    keys.sd = prompt("請輸入 ScienceDirect API Key (Elsevier)：", keys.sd) || "";
-    keys.nt = prompt("請輸入 Nature API Key (Springer)：", keys.nt) || "";
-    localStorage.setItem('biolit_keys', JSON.stringify(keys));
-}
-
 async function doSearch() {
     const q = document.getElementById('q').value;
     const sy = document.getElementById('sy').value;
@@ -66,75 +76,94 @@ async function doSearch() {
     const resArea = document.getElementById('res');
     const stat = document.getElementById('stat');
     resArea.innerHTML = '';
-    stat.innerHTML = `<i class="ti ti-loader-2 ti-spin"></i> 正在向 6 個平台請求數據...`;
+    stat.innerHTML = `<i class="ti ti-loader-2 ti-spin"></i> 正在連線多重資料庫...`;
 
-    // 擴充任務清單
+    // 同步請求四大資料庫，並將年份過濾直接傳遞給 API 以防 0 結果
     const tasks = [
         fetchPubMed(q, sy, ey),
         fetchEuropePMC(q, sy, ey),
         fetchSemanticScholar(q),
-        fetchCrossref(q),
-        fetchScienceDirect(q, sy, ey), // 新增
-        fetchNature(q, sy, ey)          // 新增
+        fetchCrossref(q)
     ];
 
     const results = await Promise.allSettled(tasks);
     let all = [];
     results.forEach(r => { if(r.status==='fulfilled') all = [...all, ...r.value]; });
 
+    // 二次過濾與去重
     const filtered = all.filter(i => i.year >= sy && i.year <= ey);
     const unique = Array.from(new Map(filtered.map(i => [i.doi || i.title.toLowerCase(), i])).values());
     unique.sort((a,b) => b.year - a.year);
 
-    stat.innerHTML = `共找到 ${unique.length} 篇文獻`;
+    stat.innerHTML = `找到 ${unique.length} 篇結果`;
     render(unique);
 }
 
-// --- 新增出版商 API 函數 ---
+// --- 資料庫擷取邏輯 ---
 
-async function fetchScienceDirect(q, s, e) {
-    if(!keys.sd) return [];
+async function fetchPubMed(q, s, e){
     try {
-        // 注意：ScienceDirect 有強烈的 CORS 限制，若報錯需透過後端或外掛
-        const url = `https://api.elsevier.com/content/search/scidir?query=${q}&apiKey=${keys.sd}&date=${s}-${e}&count=15`;
-        const r = await fetch(url, { headers: { 'Accept': 'application/json' } }).then(res => res.json());
-        return r['search-results'].entry.map(i => ({
-            title: i['dc:title'],
-            year: parseInt(i['prism:coverDate'].substring(0, 4)),
-            author: i['dc:creator'] || 'Elsevier Author',
-            doi: i['prism:doi'],
-            url: i.link.find(l => l['@rel'] === 'scidir')['@href'],
-            src: 'ScienceDirect'
+        const r = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${q}+AND+(${s}[PDAT]:${e}[PDAT])&retmode=json&retmax=20`).then(res=>res.json());
+        const ids = r.esearchresult.idlist;
+        if(!ids.length) return [];
+        const d = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(res=>res.json());
+        return ids.map(id => ({
+            title: d.result[id].title,
+            year: parseInt(d.result[id].pubdate.match(/\d{4}/)?.[0] || 0),
+            author: d.result[id].authors?.[0]?.name,
+            doi: d.result[id].elocationid?.replace('doi: ', ''),
+            url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+            src: 'PubMed'
         }));
     } catch { return []; }
 }
 
-async function fetchNature(q, s, e) {
-    if(!keys.nt) return [];
+async function fetchEuropePMC(q, s, e){
     try {
-        const url = `https://api.springernature.com/metadata/json?q=${q}%20year:${s}-${e}&api_key=${keys.nt}&p=15`;
-        const r = await fetch(url).then(res => res.json());
-        return r.records.map(i => ({
+        const r = await fetch(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${q}%20AND%20(FIRST_PDATE:[${s}%20TO%20${e}])&format=json&pageSize=20`).then(res=>res.json());
+        return r.resultList.result.map(i => ({
             title: i.title,
-            year: parseInt(i.publicationDate.substring(0, 4)),
-            author: i.creators?.[0]?.creator || 'Nature Author',
+            year: parseInt(i.pubYear),
+            author: i.authorString?.split(',')[0],
             doi: i.doi,
-            url: i.url[0].value,
-            src: 'Nature / Springer'
+            url: `https://europepmc.org/article/MED/${i.id}`,
+            src: 'Europe PMC'
         }));
     } catch { return []; }
 }
 
-// --- 原有資料庫函數 (PubMed, SS, Crossref 等) 保持不變 ---
-async function fetchPubMed(q, s, e){ try { const r = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${q}+AND+(${s}[PDAT]:${e}[PDAT])&retmode=json&retmax=15`).then(res=>res.json()); const ids = r.esearchresult.idlist; if(!ids.length) return []; const d = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`).then(res=>res.json()); return ids.map(id => ({ title: d.result[id].title, year: parseInt(d.result[id].pubdate.match(/\d{4}/)?.[0] || 0), author: d.result[id].authors?.[0]?.name, doi: d.result[id].elocationid?.replace('doi: ', ''), url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`, src: 'PubMed' })); } catch { return []; } }
-async function fetchEuropePMC(q, s, e){ try { const r = await fetch(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${q}%20AND%20(FIRST_PDATE:[${s}%20TO%20${e}])&format=json&pageSize=15`).then(res=>res.json()); return r.resultList.result.map(i => ({ title: i.title, year: parseInt(i.pubYear), author: i.authorString?.split(',')[0], doi: i.doi, url: `https://europepmc.org/article/MED/${i.id}`, src: 'Europe PMC' })); } catch { return []; } }
-async function fetchSemanticScholar(q){ try { const r = await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&limit=15&fields=title,authors,year,url,externalIds,openAccessPdf`).then(res=>res.json()); return r.data.map(i => ({ title: i.title, year: i.year, author: i.authors?.[0]?.name, doi: i.externalIds?.DOI, url: i.url, src: 'Semantic Scholar', pdf: i.openAccessPdf?.url })); } catch { return []; } }
-async function fetchCrossref(q){ try { const r = await fetch(`https://api.crossref.org/works?query=${q}&rows=15`).then(res=>res.json()); return r.message.items.map(i => ({ title: i.title[0], year: i.created['date-parts'][0][0], author: i.author?.[0]?.family, doi: i.DOI, url: i.URL, src: 'Crossref' })); } catch { return []; } }
+async function fetchSemanticScholar(q){
+    try {
+        const r = await fetch(`https://api.semanticscholar.org/graph/v1/paper/search?query=${q}&limit=20&fields=title,authors,year,url,externalIds,openAccessPdf`).then(res=>res.json());
+        return r.data.map(i => ({
+            title: i.title, year: i.year, author: i.authors?.[0]?.name,
+            doi: i.externalIds?.DOI, url: i.url, src: 'Semantic Scholar',
+            pdf: i.openAccessPdf?.url // 優先抓取官方提供的直接 PDF
+        }));
+    } catch { return []; }
+}
 
-// --- PDF 偵測核心 (延用 v7.0 穩定機制) ---
+async function fetchCrossref(q){
+    try {
+        const r = await fetch(`https://api.crossref.org/works?query=${q}&rows=20`).then(res=>res.json());
+        return r.message.items.map(i => ({
+            title: i.title[0],
+            year: i.created['date-parts'][0][0],
+            author: i.author?.[0]?.family,
+            doi: i.DOI,
+            url: i.URL,
+            src: 'Crossref'
+        }));
+    } catch { return []; }
+}
+
+// --- PDF 偵測核心 (多重 fallback) ---
+
 async function detectPDF(doi, elId) {
     if(!doi) return;
     const el = document.getElementById(elId);
+    
+    // 第一步：嘗試 Unpaywall (全球最完整 OA 資料庫)
     try {
         const res = await fetch(`https://api.unpaywall.org/v2/${doi}?email=un@example.com`).then(r=>r.json());
         if(res.is_oa && res.best_oa_location?.url_for_pdf) {
@@ -142,13 +171,27 @@ async function detectPDF(doi, elId) {
             return;
         }
     } catch(e){}
-    el.innerHTML = `<span style="font-size:12px; color:var(--text-dim); opacity:0.6">未發現合法開放 PDF</span>`;
+
+    // 第二步：如果是生物醫學，嘗試 Europe PMC 直連
+    if(doi.includes('10.')) {
+        const epUrl = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:${doi}&format=json`;
+        try {
+            const r = await fetch(epUrl).then(res=>res.json());
+            const paper = r.resultList.result[0];
+            if(paper && paper.isOpenAccess === 'Y') {
+                el.innerHTML = `<a href="https://europepmc.org/article/MED/${paper.id}#free-full-text" target="_blank" class="btn-pdf"><i class="ti ti-external-link"></i> 下載頁面 (EPMC)</a>`;
+                return;
+            }
+        } catch(e){}
+    }
+
+    el.innerHTML = `<span class="no-pdf">未偵測到合法開放獲取 PDF</span>`;
 }
 
 function render(items) {
     const area = document.getElementById('res');
     items.forEach((item, idx) => {
-        const pdfId = `pdf-v71-${idx}`;
+        const pdfId = `pdf-slot-${idx}`;
         const card = document.createElement('div');
         card.className = 'lit-card';
         card.innerHTML = `
@@ -156,13 +199,21 @@ function render(items) {
             <a href="${item.url}" target="_blank" class="title">${item.title}</a>
             <div class="meta">
                 <span class="year">${item.year} 年</span>
-                <span><i class="ti ti-user"></i> ${item.author}</span>
+                <span><i class="ti ti-user"></i> ${item.author || 'N/A'} et al.</span>
+                <span style="opacity:0.5">DOI: ${item.doi || 'N/A'}</span>
             </div>
-            <div id="${pdfId}"><i class="ti ti-loader-2 ti-spin"></i> 檢索 PDF...</div>
+            <div class="pdf-container" id="${pdfId}">
+                <i class="ti ti-loader-2 ti-spin" style="font-size:12px; color:var(--accent)"> 偵測 PDF 中...</i>
+            </div>
         `;
         area.appendChild(card);
-        if(item.pdf) document.getElementById(pdfId).innerHTML = `<a href="${item.pdf}" target="_blank" class="btn-pdf"><i class="ti ti-file-download"></i> PDF 下載</a>`;
-        else detectPDF(item.doi, pdfId);
+        
+        // 執行多重 PDF 偵測
+        if(item.pdf) {
+            document.getElementById(pdfId).innerHTML = `<a href="${item.pdf}" target="_blank" class="btn-pdf"><i class="ti ti-file-download"></i> PDF 下載</a>`;
+        } else {
+            detectPDF(item.doi, pdfId);
+        }
     });
 }
 </script>
